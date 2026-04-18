@@ -14,11 +14,18 @@
 
 @layer ccb-defaults {
 	:root {
-		/* Kolory bazowe */
-		--ccb-primary: var(--primary, var(--accent, #2563eb));
-		--ccb-text: var(--text-color, var(--color-text, #1a1a1a));
-		--ccb-bg: var(--white-trans-90, rgba(255 255 255 / 0.92));
-		--ccb-border: var(--border-color, var(--border-color-dark, #e0e0e0));
+		/* Kolory bazowe
+           Używamy --body-color i --body-bg-color z ACSS –
+           automatycznie reagują na dark/light mode motywu.
+           Fallbacki dla środowisk bez ACSS.                */
+		--ccb-primary: var(--primary, var(--accent, #718ac2));
+		--ccb-text: var(--body-color, #1a1a1a);
+		--ccb-bg: color-mix(
+			in srgb,
+			var(--body-bg-color, #ffffff) 92%,
+			transparent
+		);
+		--ccb-border: var(--neutral-light, #e0e0e0);
 		--ccb-toggle-off: var(--neutral-light, #c8c8c8);
 
 		/* Transparentności generowane z bazowych kolorów */
@@ -57,14 +64,12 @@
 		--ccb-btn-font-weight: var(--btn-font-weight, 600);
 		--ccb-btn-transition: var(--ccb-transition);
 	}
-
-	/* Dark mode – nadpisuje tokeny kolorów */
 	@media (prefers-color-scheme: dark) {
 		:root {
-			--ccb-text: var(--text-color, var(--color-text, #f0f0f0));
-			--ccb-bg: var(--dark-trans-90, rgba(24 24 24 / 0.94));
-			--ccb-border: var(--border-color, var(--border-color-dark, #3a3a3a));
-			--ccb-toggle-off: var(--neutral-dark, #555);
+			--ccb-text: #f0f0f0;
+			--ccb-bg: rgba(24, 24, 24, 0.85);
+			--ccb-border: #3a3a3a;
+			--ccb-toggle-off: #555;
 		}
 	}
 }
@@ -153,7 +158,8 @@
 	border-radius: var(--ccb-radius) var(--ccb-radius) 0 0;
 	box-shadow: 0 -4px 24px color-mix(in srgb, var(--ccb-text) 10%, transparent);
 
-	max-width: calc(100% - 2 * var(--ccb-gutter));
+	width: max-content;
+	max-width: 100%;
 	max-height: 85vh;
 	overflow-y: auto;
 	overflow-x: hidden;
