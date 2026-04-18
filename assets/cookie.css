@@ -1,0 +1,423 @@
+/* ==========================================================
+   Cookie Consent Banner – cookie.css  v2.4.0
+
+   DESIGN TOKENS (lokalne, dziedziczą z motywu gdy dostępne)
+   Jeśli Automatic.css / motyw nie dostarcza zmiennych,
+   fallbacki poniżej zapewniają pełną autonomię pluginu.
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   LOKALNE TOKENY
+   Definicja na :root – nadpisywane przez motyw jeśli istnieją.
+   Używamy @layer żeby mieć najniższy priorytet.
+---------------------------------------------------------- */
+
+@layer ccb-defaults {
+	:root {
+		/* Kolory bazowe */
+		--ccb-primary: var(--primary, var(--accent, #2563eb));
+		--ccb-text: var(--text-color, var(--color-text, #1a1a1a));
+		--ccb-bg: var(--white-trans-90, rgba(255 255 255 / 0.92));
+		--ccb-border: var(--border-color, var(--border-color-dark, #e0e0e0));
+		--ccb-toggle-off: var(--neutral-light, #c8c8c8);
+
+		/* Transparentności generowane z bazowych kolorów */
+		--ccb-text-muted: color-mix(in srgb, var(--ccb-text) 75%, transparent);
+		--ccb-text-subtle: color-mix(in srgb, var(--ccb-text) 55%, transparent);
+		--ccb-border-subtle: color-mix(in srgb, var(--ccb-border) 80%, transparent);
+
+		/* Przestrzeń */
+		--ccb-gap: var(--space-s, 1rem);
+		--ccb-gap-xs: var(--space-xs, 0.5rem);
+		--ccb-padding: var(--space-m, 1.5rem);
+		--ccb-gutter: var(--gutter, 1rem);
+		--ccb-radius: var(--radius, 12px);
+		--ccb-max-width: var(
+			--ccb-banner-max-width,
+			64ch
+		); /* nadpisywane przez PHP */
+
+		/* Typografia */
+		--ccb-font-size-base: var(--text-s, 0.875rem);
+		--ccb-font-size-h2: var(--h4, 1.125rem);
+		--ccb-font-size-h3: var(--h5, 1rem);
+
+		/* Animacje */
+		--ccb-transition: var(--transition, 0.2s ease);
+
+		/* Focus */
+		--ccb-focus-color: var(--focus-color, var(--ccb-primary));
+		--ccb-focus-width: var(--focus-width, 2px);
+		--ccb-focus-offset: var(--focus-offset, 3px);
+
+		/* Btn fallback (gdy brak Automatic.css) */
+		--ccb-btn-radius: var(--btn-radius, var(--ccb-radius));
+		--ccb-btn-padding: var(--btn-padding, 0.5em 1.25em);
+		--ccb-btn-font-size: var(--btn-font-size, var(--ccb-font-size-base));
+		--ccb-btn-font-weight: var(--btn-font-weight, 600);
+		--ccb-btn-transition: var(--ccb-transition);
+	}
+
+	/* Dark mode – nadpisuje tokeny kolorów */
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--ccb-text: var(--text-color, var(--color-text, #f0f0f0));
+			--ccb-bg: var(--dark-trans-90, rgba(24 24 24 / 0.94));
+			--ccb-border: var(--border-color, var(--border-color-dark, #3a3a3a));
+			--ccb-toggle-off: var(--neutral-dark, #555);
+		}
+	}
+}
+
+/* ----------------------------------------------------------
+   BTN FALLBACK
+   Działa gdy Automatic.css nie jest załadowany.
+   Gdy ACSS jest, jego klasy mają wyższy specificity i wygrywają.
+   Używamy :where() żeby specificity był 0 – ACSS zawsze wygrywa.
+---------------------------------------------------------- */
+
+:where(.cookie-banner) .btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.375em;
+	padding: var(--ccb-btn-padding);
+	font-size: var(--ccb-btn-font-size);
+	font-weight: var(--ccb-btn-font-weight);
+	line-height: 1.2;
+	border-radius: var(--ccb-btn-radius);
+	border: 2px solid transparent;
+	cursor: pointer;
+	text-decoration: none;
+	transition:
+		background var(--ccb-btn-transition),
+		color var(--ccb-btn-transition),
+		border-color var(--ccb-btn-transition),
+		opacity var(--ccb-btn-transition);
+	white-space: nowrap;
+}
+
+:where(.cookie-banner) .btn--primary {
+	background: var(--ccb-primary);
+	color: #fff;
+	border-color: var(--ccb-primary);
+}
+
+:where(.cookie-banner) .btn--primary:hover {
+	opacity: 0.88;
+}
+
+:where(.cookie-banner) .btn--outline {
+	background: transparent;
+	color: var(--ccb-primary);
+	border-color: var(--ccb-primary);
+}
+
+:where(.cookie-banner) .btn--outline:hover {
+	background: color-mix(in srgb, var(--ccb-primary) 10%, transparent);
+}
+
+:where(.cookie-banner) .btn--ghost {
+	background: transparent;
+	color: var(--ccb-text-muted);
+	border-color: transparent;
+}
+
+:where(.cookie-banner) .btn--ghost:hover {
+	color: var(--ccb-text);
+	background: color-mix(in srgb, var(--ccb-text) 8%, transparent);
+}
+
+:where(.cookie-banner) .btn:focus-visible {
+	outline: var(--ccb-focus-width) solid var(--ccb-focus-color);
+	outline-offset: var(--ccb-focus-offset);
+}
+
+/* ----------------------------------------------------------
+   BANER – wrapper
+---------------------------------------------------------- */
+
+.cookie-banner {
+	position: fixed;
+	bottom: 0;
+	left: var(--ccb-gutter);
+	right: var(--ccb-gutter);
+	z-index: 9999;
+
+	padding: var(--ccb-padding);
+	background: var(--ccb-bg);
+	color: var(--ccb-text);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+
+	border-radius: var(--ccb-radius) var(--ccb-radius) 0 0;
+	box-shadow: 0 -4px 24px color-mix(in srgb, var(--ccb-text) 10%, transparent);
+
+	max-width: calc(100% - 2 * var(--ccb-gutter));
+	max-height: 85vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.cookie-banner__inner {
+	display: flex;
+	flex-direction: column;
+	gap: var(--ccb-gap);
+}
+
+/* ----------------------------------------------------------
+   INTRO
+---------------------------------------------------------- */
+
+.cookie-banner__intro {
+	display: flex;
+	align-items: center;
+	gap: var(--ccb-gap-xs);
+}
+
+.cookie-banner__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	color: var(--ccb-primary);
+	line-height: 1;
+}
+
+.cookie-banner__icon svg {
+	display: block;
+	color: inherit;
+}
+
+.cookie-banner__heading {
+	font-size: var(--ccb-font-size-h2);
+	margin: 0;
+	line-height: 1.3;
+	color: var(--ccb-text);
+}
+
+/* ----------------------------------------------------------
+   SEKCJA GŁÓWNA (stan BANNER)
+---------------------------------------------------------- */
+
+.cookie-banner__main {
+	display: flex;
+	flex-direction: column;
+	gap: var(--ccb-gap-xs);
+	max-width: var(--ccb-max-width);
+}
+
+.cookie-banner__description {
+	margin: 0;
+	font-size: var(--ccb-font-size-base);
+	line-height: 1.6;
+	color: var(--ccb-text-muted);
+}
+
+.cookie-banner__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--ccb-gap-xs);
+}
+
+/* ----------------------------------------------------------
+   OPCJE SZCZEGÓŁOWE
+---------------------------------------------------------- */
+
+.cookie-options {
+	display: flex;
+	flex-direction: column;
+	border-top: 1px solid var(--ccb-border-subtle);
+	padding-top: var(--ccb-gap);
+	gap: 0;
+}
+
+.cookie-options__heading {
+	font-size: var(--ccb-font-size-h3);
+	margin: 0 0 var(--ccb-gap-xs);
+	color: var(--ccb-text);
+}
+
+.cookie-options__footer {
+	margin-top: var(--ccb-gap);
+}
+
+/* ----------------------------------------------------------
+   POJEDYNCZA OPCJA
+---------------------------------------------------------- */
+
+.cookie-option {
+	padding: var(--ccb-gap-xs) 0;
+	border-bottom: 1px solid var(--ccb-border-subtle);
+}
+
+.cookie-option:last-of-type {
+	border-bottom: none;
+}
+
+.cookie-option__row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--ccb-gap);
+	margin-bottom: 0.25rem;
+}
+
+.cookie-option__label {
+	font-size: var(--ccb-font-size-base);
+	font-weight: 600;
+	cursor: pointer;
+	line-height: 1.4;
+	color: var(--ccb-text);
+}
+
+.cookie-option__description {
+	font-size: var(--ccb-font-size-base);
+	color: var(--ccb-text-muted);
+	margin: 0;
+	line-height: 1.5;
+	max-width: var(--ccb-max-width);
+}
+
+.cookie-option__always-on {
+	font-size: var(--ccb-font-size-base);
+	color: var(--ccb-text-subtle);
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+/* ----------------------------------------------------------
+   TOGGLE SWITCH  button[role="switch"]
+---------------------------------------------------------- */
+
+.cookie-toggle {
+	appearance: none;
+	border: none;
+	padding: 0;
+	background: none;
+	cursor: pointer;
+	flex-shrink: 0;
+
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	width: 44px;
+	height: 24px;
+	border-radius: 999px;
+	background: var(--ccb-toggle-off);
+	transition: background var(--ccb-transition);
+}
+
+.cookie-toggle__thumb {
+	position: absolute;
+	left: 3px;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: #fff;
+	box-shadow: 0 1px 4px color-mix(in srgb, var(--ccb-text) 20%, transparent);
+	transition: transform var(--ccb-transition);
+	pointer-events: none;
+}
+
+.cookie-toggle[aria-checked="true"] {
+	background: var(--ccb-primary);
+}
+
+.cookie-toggle[aria-checked="true"] .cookie-toggle__thumb {
+	transform: translateX(20px);
+}
+
+.cookie-toggle:focus-visible {
+	outline: var(--ccb-focus-width) solid var(--ccb-focus-color);
+	outline-offset: var(--ccb-focus-offset);
+}
+
+/* ----------------------------------------------------------
+   PŁYWAJĄCY TOGGLE BUTTON
+   Pozycja: klasa --left / --right generowana przez PHP
+---------------------------------------------------------- */
+
+.cookie-banner-toggle {
+	position: fixed;
+	bottom: calc(var(--ccb-gutter) / 2);
+	z-index: 9998;
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background: transparent;
+	cursor: pointer;
+
+	transition:
+		opacity var(--ccb-transition),
+		transform var(--ccb-transition);
+	opacity: 0.7;
+}
+
+.cookie-banner-toggle--left {
+	left: calc(var(--ccb-gutter) / 2);
+}
+.cookie-banner-toggle--right {
+	right: calc(var(--ccb-gutter) / 2);
+}
+
+.cookie-banner-toggle:hover {
+	opacity: 1;
+	transform: scale(1.1);
+}
+
+.cookie-banner-toggle:focus-visible {
+	outline: var(--ccb-focus-width) solid var(--ccb-focus-color);
+	outline-offset: var(--ccb-focus-offset);
+}
+
+.cookie-banner-toggle__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--ccb-primary);
+	line-height: 1;
+}
+
+.cookie-banner-toggle__icon svg {
+	display: block;
+	color: inherit;
+}
+
+/* ----------------------------------------------------------
+   POMOCNICZE
+---------------------------------------------------------- */
+
+.display--none {
+	display: none !important;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ----------------------------------------------------------
+   RESPONSIVE
+---------------------------------------------------------- */
+
+@media (min-width: 640px) {
+	.cookie-banner {
+		bottom: var(--ccb-gutter);
+		border-radius: var(--ccb-radius);
+	}
+}
