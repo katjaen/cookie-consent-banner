@@ -9,13 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-18T17:28:02+00:00\n"
+"POT-Creation-Date: 2026-04-18T22:14:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: cookie-consent-banner\n"
 
 #. Plugin Name of the plugin
 #: cookie-consent-banner.php
+#: includes/ccb-settings.php:15
 msgid "Cookie Consent Banner"
 msgstr ""
 
@@ -39,8 +40,267 @@ msgstr ""
 msgid "https://niklassmolen.pl"
 msgstr ""
 
-#: cookie-consent-banner.php:68
+#: cookie-consent-banner.php:69
 msgid "Settings"
+msgstr ""
+
+#: includes/ccb-settings.php:16
+msgid "Cookie Banner"
+msgstr ""
+
+#. translators: Main banner description shown to visitors on first visit
+#: includes/ccb-settings.php:51
+msgid "This website uses cookies to improve your experience: remembering preferences, analyzing traffic (Google Analytics – only with consent), and protecting contact forms. You can accept all, reject all, or customize your settings."
+msgstr ""
+
+#. translators: Description for technical/necessary cookies section
+#: includes/ccb-settings.php:53
+msgid "Enable core site features: navigation, sessions, and form protection. These cannot be disabled."
+msgstr ""
+
+#. translators: Description for functional cookies section
+#: includes/ccb-settings.php:55
+msgid "Remember your preferences: language, dark mode, and page layout."
+msgstr ""
+
+#. translators: Description for analytics cookies section
+#: includes/ccb-settings.php:57
+msgid "Collect anonymous traffic data to help improve the site (Google Analytics)."
+msgstr ""
+
+#. translators: Description for marketing cookies section
+#: includes/ccb-settings.php:59
+msgid "Personalize ads and measure their effectiveness."
+msgstr ""
+
+#: includes/ccb-settings.php:76
+msgid "Settings have been reset to defaults."
+msgstr ""
+
+#. translators: Error message when GTM ID format is wrong
+#: includes/ccb-settings.php:90
+msgid "GTM ID format is invalid. It should look like GTM-XXXXXXX."
+msgstr ""
+
+#: includes/ccb-settings.php:178
+msgid "Cookie Consent Banner – Settings"
+msgstr ""
+
+#: includes/ccb-settings.php:186
+msgid "Tracking"
+msgstr ""
+
+#: includes/ccb-settings.php:190
+msgid "Google Tag Manager ID"
+msgstr ""
+
+#: includes/ccb-settings.php:204
+#, php-format
+msgid "Format: %s. If set, analytics cookies are enabled automatically."
+msgstr ""
+
+#: includes/ccb-settings.php:213
+#: templates/banner.php:99
+msgid "Analytics cookies"
+msgstr ""
+
+#: includes/ccb-settings.php:222
+msgid "Show analytics cookies section in banner"
+msgstr ""
+
+#: includes/ccb-settings.php:225
+msgid "Enabled automatically – GTM ID is set."
+msgstr ""
+
+#: includes/ccb-settings.php:228
+msgid "Per GDPR, the toggle in the banner always starts as disabled regardless of this setting. This field only controls whether the section is visible."
+msgstr ""
+
+#: includes/ccb-settings.php:235
+#: templates/banner.php:120
+msgid "Marketing cookies"
+msgstr ""
+
+#: includes/ccb-settings.php:243
+msgid "Show marketing cookies section in banner"
+msgstr ""
+
+#: includes/ccb-settings.php:245
+msgid "Enable when using ads (Meta Ads, Google Ads, etc.)."
+msgstr ""
+
+#: includes/ccb-settings.php:252
+msgid "Integrations"
+msgstr ""
+
+#: includes/ccb-settings.php:256
+msgid "WP Consent API"
+msgstr ""
+
+#: includes/ccb-settings.php:260
+msgid "WP Consent API is active. Consent is automatically synchronized with compatible plugins (e.g. Embed Privacy)."
+msgstr ""
+
+#: includes/ccb-settings.php:263
+msgid "WP Consent API is not installed. Without it, plugins that block iframes (YouTube, Instagram, Facebook) will not respond to consent from this banner."
+msgstr ""
+
+#: includes/ccb-settings.php:265
+msgid "Install WP Consent API"
+msgstr ""
+
+#. translators: %s: link to Embed Privacy plugin
+#: includes/ccb-settings.php:271
+#, php-format
+msgid "After installation you can use %s to block YouTube / Instagram / Facebook embeds until consent is given."
+msgstr ""
+
+#: includes/ccb-settings.php:281
+msgid "YouTube nocookie"
+msgstr ""
+
+#. translators: %1$s: youtube.com, %2$s: youtube-nocookie.com
+#: includes/ccb-settings.php:292
+#, php-format
+msgid "Replace %1$s with %2$s in embeds"
+msgstr ""
+
+#: includes/ccb-settings.php:298
+msgid "Eliminates YouTube tracking cookies without blocking the iframe. Works in post content, widgets, and Gutenberg blocks."
+msgstr ""
+
+#: includes/ccb-settings.php:305
+msgid "Banner content"
+msgstr ""
+
+#. translators: list of allowed HTML tags
+#: includes/ccb-settings.php:310
+#, php-format
+msgid "Allowed tags: %s"
+msgstr ""
+
+#: includes/ccb-settings.php:317
+msgid "Main description"
+msgstr ""
+
+#: includes/ccb-settings.php:317
+msgid "Text shown on first visit before options are expanded."
+msgstr ""
+
+#: includes/ccb-settings.php:326
+msgid "Cookie section descriptions"
+msgstr ""
+
+#: includes/ccb-settings.php:330
+msgid "Technical"
+msgstr ""
+
+#: includes/ccb-settings.php:330
+msgid "Always visible, toggle disabled."
+msgstr ""
+
+#: includes/ccb-settings.php:331
+msgid "Functional"
+msgstr ""
+
+#: includes/ccb-settings.php:332
+msgid "Analytics"
+msgstr ""
+
+#: includes/ccb-settings.php:332
+msgid "Visible only when analytics section is enabled."
+msgstr ""
+
+#: includes/ccb-settings.php:333
+msgid "Marketing"
+msgstr ""
+
+#: includes/ccb-settings.php:333
+msgid "Visible only when marketing section is enabled."
+msgstr ""
+
+#: includes/ccb-settings.php:338
+msgid "Cookie expiry"
+msgstr ""
+
+#: includes/ccb-settings.php:342
+msgid "After acceptance (days)"
+msgstr ""
+
+#: includes/ccb-settings.php:346
+msgid "Default: 90 days. Recommended: 90–180."
+msgstr ""
+
+#: includes/ccb-settings.php:351
+msgid "After rejection (days)"
+msgstr ""
+
+#: includes/ccb-settings.php:355
+msgid "Default: 1 day. Increase if you don't want to show the banner too often."
+msgstr ""
+
+#: includes/ccb-settings.php:362
+msgid "Interface"
+msgstr ""
+
+#: includes/ccb-settings.php:366
+msgid "Banner position (horizontal)"
+msgstr ""
+
+#: includes/ccb-settings.php:369
+msgid "Banner position"
+msgstr ""
+
+#: includes/ccb-settings.php:372
+msgid "Left"
+msgstr ""
+
+#: includes/ccb-settings.php:373
+msgid "Center"
+msgstr ""
+
+#: includes/ccb-settings.php:374
+msgid "Right"
+msgstr ""
+
+#: includes/ccb-settings.php:384
+msgid "Banner sticks to the bottom edge, horizontal position only."
+msgstr ""
+
+#: includes/ccb-settings.php:390
+msgid "Maximum banner width"
+msgstr ""
+
+#. translators: %s: list of allowed CSS units
+#: includes/ccb-settings.php:399
+#, php-format
+msgid "Units: %s. Default: 64ch. Never exceeds 100%%."
+msgstr ""
+
+#: includes/ccb-settings.php:408
+#: includes/ccb-settings.php:411
+msgid "Restore button position"
+msgstr ""
+
+#: includes/ccb-settings.php:415
+msgid "Bottom left"
+msgstr ""
+
+#: includes/ccb-settings.php:420
+msgid "Bottom right"
+msgstr ""
+
+#: includes/ccb-settings.php:429
+#: templates/banner.php:138
+msgid "Save settings"
+msgstr ""
+
+#: includes/ccb-settings.php:436
+msgid "Reset all settings to defaults? This cannot be undone."
+msgstr ""
+
+#: includes/ccb-settings.php:437
+msgid "Reset to defaults"
 msgstr ""
 
 #: templates/banner.php:36
@@ -79,24 +339,12 @@ msgstr ""
 msgid "Enable or disable functional cookies"
 msgstr ""
 
-#: templates/banner.php:99
-msgid "Analytics cookies"
-msgstr ""
-
 #: templates/banner.php:107
 msgid "Enable or disable analytics cookies"
 msgstr ""
 
-#: templates/banner.php:120
-msgid "Marketing cookies"
-msgstr ""
-
 #: templates/banner.php:128
 msgid "Enable or disable marketing cookies"
-msgstr ""
-
-#: templates/banner.php:138
-msgid "Save settings"
 msgstr ""
 
 #: templates/banner.php:152

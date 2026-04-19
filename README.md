@@ -207,9 +207,15 @@ This enables plugins like [Embed Privacy](https://wordpress.org/plugins/embed-pr
 
 ## Internationalization (i18n)
 
-All static UI strings (button labels, headings, ARIA labels) are wrapped in `__()` and ready for translation via `.po`/`.mo` files. The plugin includes a `languages/` directory and registers its text domain on `init`.
+All static UI strings (button labels, headings, ARIA labels) are wrapped in `__()` and ready for translation via `.po`/`.mo` files. The plugin includes a `languages/` directory and registers its text domain on `plugins_loaded`.
 
 A `.pot` template file is included in `languages/cookie-consent-banner.pot` — you don't need to scan the source code yourself.
+
+**Included translations:**
+
+| Language | Locale  | Status     |
+| -------- | ------- | ---------- |
+| Polish   | `pl_PL` | ✓ Complete |
 
 **To add a translation:**
 

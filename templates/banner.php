@@ -83,7 +83,7 @@ $allowed_tags = [
                         class="cookie-toggle"
                         type="button"
                         role="switch"
-                        aria-checked="false"
+                        aria-checked="true"
                         data-cookie-type="functional"><span class="cookie-toggle__thumb"></span><span class="sr-only"><?php esc_html_e('Enable or disable functional cookies', 'cookie-consent-banner'); ?></span></button>
                 </div>
                 <p class="cookie-option__description">

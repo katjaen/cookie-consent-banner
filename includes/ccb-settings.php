@@ -6,10 +6,14 @@
 
 if (!defined('ABSPATH')) exit;
 
+// ==========================
+// REJESTRACJA
+// ==========================
+
 add_action('admin_menu', function () {
     add_options_page(
-        'Cookie Consent Banner',
-        'Cookie Banner',
+        __('Cookie Consent Banner', 'cookie-consent-banner'),
+        __('Cookie Banner', 'cookie-consent-banner'),
         'manage_options',
         'ccb-settings',
         'ccb_render_settings_page'
@@ -43,11 +47,16 @@ function ccb_defaults(): array
         'toggle_position'  => 'left',
         'banner_position'  => 'left',
         'banner_max_width' => '64ch',
-        'banner_desc'      => 'Ta strona korzysta z plików cookie w celu poprawy komfortu korzystania: zapamiętywania preferencji, analizy ruchu (Google Analytics – tylko za zgodą) oraz ochrony formularzy kontaktowych. Możesz zaakceptować wszystkie, odrzucić lub dostosować ustawienia.',
-        'desc_technical'   => 'Umożliwiają podstawowe funkcje strony: nawigację, sesje, ochronę formularzy. Nie można ich wyłączyć.',
-        'desc_functional'  => 'Zapamiętują Twoje preferencje: język, tryb ciemny, układ strony.',
-        'desc_analytics'   => 'Zbierają anonimowe dane o ruchu – pomagają ulepszać stronę (Google Analytics).',
-        'desc_marketing'   => 'Personalizacja reklam i mierzenie ich skuteczności.',
+        /* translators: Main banner description shown to visitors on first visit */
+        'banner_desc'      => __('This website uses cookies to improve your experience: remembering preferences, analyzing traffic (Google Analytics – only with consent), and protecting contact forms. You can accept all, reject all, or customize your settings.', 'cookie-consent-banner'),
+        /* translators: Description for technical/necessary cookies section */
+        'desc_technical'   => __('Enable core site features: navigation, sessions, and form protection. These cannot be disabled.', 'cookie-consent-banner'),
+        /* translators: Description for functional cookies section */
+        'desc_functional'  => __('Remember your preferences: language, dark mode, and page layout.', 'cookie-consent-banner'),
+        /* translators: Description for analytics cookies section */
+        'desc_analytics'   => __('Collect anonymous traffic data to help improve the site (Google Analytics).', 'cookie-consent-banner'),
+        /* translators: Description for marketing cookies section */
+        'desc_marketing'   => __('Personalize ads and measure their effectiveness.', 'cookie-consent-banner'),
     ];
 }
 
@@ -59,6 +68,17 @@ function ccb_sanitize_options(array $raw): array
 {
     $defaults = ccb_defaults();
 
+    // Reset do domyślnych
+    if (!empty($raw['reset'])) {
+        add_settings_error(
+            'ccb_options',
+            'ccb_reset',
+            __('Settings have been reset to defaults.', 'cookie-consent-banner'),
+            'updated'
+        );
+        return $defaults;
+    }
+
     $gtm_raw = sanitize_text_field($raw['gtm_id'] ?? '');
     $gtm_id  = preg_match('/^GTM-[A-Z0-9]{4,}$/', $gtm_raw) ? $gtm_raw : '';
 
@@ -66,7 +86,8 @@ function ccb_sanitize_options(array $raw): array
         add_settings_error(
             'ccb_options',
             'gtm_id_invalid',
-            'GTM ID ma nieprawidłowy format. Powinno wyglądać jak GTM-XXXXXXX.',
+            /* translators: Error message when GTM ID format is wrong */
+            __('GTM ID format is invalid. It should look like GTM-XXXXXXX.', 'cookie-consent-banner'),
             'error'
         );
     }
@@ -150,12 +171,11 @@ function ccb_textarea_field(string $key, string $label, string $hint, array $opt
 function ccb_render_settings_page(): void
 {
     if (!current_user_can('manage_options')) return;
-    $opts             = wp_parse_args(get_option('ccb_options', []), ccb_defaults());
-    $has_consent_api  = function_exists('wp_has_consent');
-    $allowed_tags_note = 'Dozwolone tagi: <code>&lt;a&gt;</code>, <code>&lt;strong&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;br&gt;</code>.';
+    $opts            = wp_parse_args(get_option('ccb_options', []), ccb_defaults());
+    $has_consent_api = function_exists('wp_has_consent');
 ?>
     <div class="wrap">
-        <h1>Cookie Consent Banner – Ustawienia</h1>
+        <h1><?php esc_html_e('Cookie Consent Banner – Settings', 'cookie-consent-banner'); ?></h1>
 
         <?php settings_errors('ccb_options'); ?>
 
@@ -163,11 +183,11 @@ function ccb_render_settings_page(): void
             <?php settings_fields('ccb_settings_group'); ?>
 
             <!-- ==================== ŚLEDZENIE ==================== -->
-            <h2 class="title">Śledzenie</h2>
+            <h2 class="title"><?php esc_html_e('Tracking', 'cookie-consent-banner'); ?></h2>
             <table class="form-table" role="presentation">
 
                 <tr>
-                    <th scope="row"><label for="ccb_gtm_id">Google Tag Manager ID</label></th>
+                    <th scope="row"><label for="ccb_gtm_id"><?php esc_html_e('Google Tag Manager ID', 'cookie-consent-banner'); ?></label></th>
                     <td>
                         <input
                             type="text"
@@ -178,13 +198,19 @@ function ccb_render_settings_page(): void
                             class="regular-text"
                             pattern="GTM-[A-Z0-9]{4,}">
                         <p class="description">
-                            Format: <code>GTM-XXXXXXX</code>. Jeśli wpisane – analityczne cookies włączają się automatycznie.
+                            <?php
+                            /* translators: %s: example GTM ID format */
+                            printf(
+                                esc_html__('Format: %s. If set, analytics cookies are enabled automatically.', 'cookie-consent-banner'),
+                                '<code>GTM-XXXXXXX</code>'
+                            );
+                            ?>
                         </p>
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row">Analityczne cookies</th>
+                    <th scope="row"><?php esc_html_e('Analytics cookies', 'cookie-consent-banner'); ?></th>
                     <td>
                         <label>
                             <input
@@ -193,21 +219,20 @@ function ccb_render_settings_page(): void
                                 value="1"
                                 <?php checked('1', $opts['show_analytics']); ?>
                                 <?php disabled(!empty($opts['gtm_id']), true); ?>>
-                            Pokaż sekcję analitycznych cookies w banerze
+                            <?php esc_html_e('Show analytics cookies section in banner', 'cookie-consent-banner'); ?>
                         </label>
                         <?php if (!empty($opts['gtm_id'])) : ?>
-                            <p class="description">Włączone automatycznie – GTM ID jest wpisane.</p>
+                            <p class="description"><?php esc_html_e('Enabled automatically – GTM ID is set.', 'cookie-consent-banner'); ?></p>
                         <?php else : ?>
                             <p class="description">
-                                Zgodnie z GDPR toggle w banerze zawsze startuje jako <strong>wyłączony</strong>.
-                                To pole decyduje tylko czy sekcja jest widoczna.
+                                <?php esc_html_e('Per GDPR, the toggle in the banner always starts as disabled regardless of this setting. This field only controls whether the section is visible.', 'cookie-consent-banner'); ?>
                             </p>
                         <?php endif; ?>
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row">Marketingowe cookies</th>
+                    <th scope="row"><?php esc_html_e('Marketing cookies', 'cookie-consent-banner'); ?></th>
                     <td>
                         <label>
                             <input
@@ -215,47 +240,45 @@ function ccb_render_settings_page(): void
                                 name="ccb_options[show_marketing]"
                                 value="1"
                                 <?php checked('1', $opts['show_marketing']); ?>>
-                            Pokaż sekcję marketingowych cookies w banerze
+                            <?php esc_html_e('Show marketing cookies section in banner', 'cookie-consent-banner'); ?>
                         </label>
-                        <p class="description">Włącz gdy korzystasz z reklam (Meta Ads, Google Ads itp.).</p>
+                        <p class="description"><?php esc_html_e('Enable when using ads (Meta Ads, Google Ads, etc.).', 'cookie-consent-banner'); ?></p>
                     </td>
                 </tr>
 
             </table>
 
             <!-- ==================== INTEGRACJE ==================== -->
-            <h2 class="title">Integracje</h2>
+            <h2 class="title"><?php esc_html_e('Integrations', 'cookie-consent-banner'); ?></h2>
             <table class="form-table" role="presentation">
 
                 <tr>
-                    <th scope="row">WP Consent API</th>
+                    <th scope="row"><?php esc_html_e('WP Consent API', 'cookie-consent-banner'); ?></th>
                     <td>
                         <?php if ($has_consent_api) : ?>
                             <p style="color: #46b450;">
-                                ✓ WP Consent API jest aktywne. Zgody są automatycznie synchronizowane
-                                z pluginami obsługującymi ten standard (np. Embed Privacy).
+                                ✓ <?php esc_html_e('WP Consent API is active. Consent is automatically synchronized with compatible plugins (e.g. Embed Privacy).', 'cookie-consent-banner'); ?>
                             </p>
                         <?php else : ?>
-                            <p>
-                                WP Consent API nie jest zainstalowane. Bez niego pluginy blokujące
-                                iframy (YouTube, Instagram, Facebook) nie będą reagować na zgody z tego banera.
-                            </p>
-                            <a
-                                href="<?php echo esc_url(admin_url('plugin-install.php?s=wp-consent-api&tab=search&type=term')); ?>"
-                                class="button">
-                                Zainstaluj WP Consent API
+                            <p><?php esc_html_e('WP Consent API is not installed. Without it, plugins that block iframes (YouTube, Instagram, Facebook) will not respond to consent from this banner.', 'cookie-consent-banner'); ?></p>
+                            <a href="<?php echo esc_url(admin_url('plugin-install.php?s=wp-consent-api&tab=search&type=term')); ?>" class="button">
+                                <?php esc_html_e('Install WP Consent API', 'cookie-consent-banner'); ?>
                             </a>
                             <p class="description" style="margin-top: .5rem;">
-                                Po instalacji możesz użyć pluginu
-                                <a href="https://wordpress.org/plugins/embed-privacy/" target="_blank" rel="noopener">Embed Privacy</a>
-                                do blokowania embeddedów YT / IG / FB do czasu wyrażenia zgody.
+                                <?php
+                                printf(
+                                    /* translators: %s: link to Embed Privacy plugin */
+                                    esc_html__('After installation you can use %s to block YouTube / Instagram / Facebook embeds until consent is given.', 'cookie-consent-banner'),
+                                    '<a href="https://wordpress.org/plugins/embed-privacy/" target="_blank" rel="noopener">Embed Privacy</a>'
+                                );
+                                ?>
                             </p>
                         <?php endif; ?>
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row">YouTube nocookie</th>
+                    <th scope="row"><?php esc_html_e('YouTube nocookie', 'cookie-consent-banner'); ?></th>
                     <td>
                         <label>
                             <input
@@ -263,24 +286,35 @@ function ccb_render_settings_page(): void
                                 name="ccb_options[yt_nocookie]"
                                 value="1"
                                 <?php checked('1', $opts['yt_nocookie']); ?>>
-                            Zastąp <code>youtube.com</code> przez <code>youtube-nocookie.com</code> w embedach
+                            <?php
+                            printf(
+                                /* translators: %1$s: youtube.com, %2$s: youtube-nocookie.com */
+                                esc_html__('Replace %1$s with %2$s in embeds', 'cookie-consent-banner'),
+                                '<code>youtube.com</code>',
+                                '<code>youtube-nocookie.com</code>'
+                            );
+                            ?>
                         </label>
-                        <p class="description">
-                            Eliminuje cookies śledzące YouTube bez blokowania iframe.
-                            Działa w treści stron, postów, widgetów i blokach Gutenberg.
-                            Nie zastępuje blokowania embeddedów – to dodatkowe zabezpieczenie.
-                        </p>
+                        <p class="description"><?php esc_html_e('Eliminates YouTube tracking cookies without blocking the iframe. Works in post content, widgets, and Gutenberg blocks.', 'cookie-consent-banner'); ?></p>
                     </td>
                 </tr>
 
             </table>
 
             <!-- ==================== TREŚĆ ==================== -->
-            <h2 class="title">Treść banera</h2>
-            <p class="description" style="margin: 0 0 1rem;"><?php echo $allowed_tags_note; ?></p>
+            <h2 class="title"><?php esc_html_e('Banner content', 'cookie-consent-banner'); ?></h2>
+            <p class="description" style="margin: 0 0 1rem;">
+                <?php
+                printf(
+                    /* translators: list of allowed HTML tags */
+                    esc_html__('Allowed tags: %s', 'cookie-consent-banner'),
+                    '<code>&lt;a&gt;</code>, <code>&lt;strong&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;br&gt;</code>'
+                );
+                ?>
+            </p>
             <table class="form-table" role="presentation">
 
-                <?php ccb_textarea_field('banner_desc', 'Opis główny', 'Tekst widoczny przy pierwszej wizycie przed rozwinięciem opcji.', $opts); ?>
+                <?php ccb_textarea_field('banner_desc', __('Main description', 'cookie-consent-banner'), __('Text shown on first visit before options are expanded.', 'cookie-consent-banner'), $opts); ?>
 
                 <tr>
                     <td colspan="2">
@@ -289,115 +323,101 @@ function ccb_render_settings_page(): void
                 </tr>
                 <tr>
                     <th colspan="2">
-                        <h3 style="margin: 0; font-size: 1rem;">Opisy sekcji cookies</h3>
+                        <h3 style="margin: 0; font-size: 1rem;"><?php esc_html_e('Cookie section descriptions', 'cookie-consent-banner'); ?></h3>
                     </th>
                 </tr>
 
-                <?php ccb_textarea_field('desc_technical',  'Techniczne',   'Sekcja zawsze widoczna, toggle zablokowany.', $opts); ?>
-                <?php ccb_textarea_field('desc_functional', 'Funkcjonalne', '', $opts); ?>
-                <?php ccb_textarea_field('desc_analytics',  'Analityczne',  'Widoczne tylko gdy sekcja analityczna jest włączona.', $opts); ?>
-                <?php ccb_textarea_field('desc_marketing',  'Marketingowe', 'Widoczne tylko gdy sekcja marketingowa jest włączona.', $opts); ?>
+                <?php ccb_textarea_field('desc_technical',  __('Technical',   'cookie-consent-banner'), __('Always visible, toggle disabled.', 'cookie-consent-banner'), $opts); ?>
+                <?php ccb_textarea_field('desc_functional', __('Functional',  'cookie-consent-banner'), '', $opts); ?>
+                <?php ccb_textarea_field('desc_analytics',  __('Analytics',   'cookie-consent-banner'), __('Visible only when analytics section is enabled.', 'cookie-consent-banner'), $opts); ?>
+                <?php ccb_textarea_field('desc_marketing',  __('Marketing',   'cookie-consent-banner'), __('Visible only when marketing section is enabled.', 'cookie-consent-banner'), $opts); ?>
 
             </table>
 
             <!-- ==================== WAŻNOŚĆ COOKIES ==================== -->
-            <h2 class="title">Ważność cookies</h2>
+            <h2 class="title"><?php esc_html_e('Cookie expiry', 'cookie-consent-banner'); ?></h2>
             <table class="form-table" role="presentation">
 
                 <tr>
-                    <th scope="row"><label for="ccb_expiry_accepted">Po akceptacji (dni)</label></th>
+                    <th scope="row"><label for="ccb_expiry_accepted"><?php esc_html_e('After acceptance (days)', 'cookie-consent-banner'); ?></label></th>
                     <td>
-                        <input
-                            type="number"
-                            id="ccb_expiry_accepted"
-                            name="ccb_options[expiry_accepted]"
-                            value="<?php echo esc_attr($opts['expiry_accepted']); ?>"
-                            min="1" max="365"
-                            class="small-text">
-                        <p class="description">Domyślnie 90 dni. Zalecane: 90–180.</p>
+                        <input type="number" id="ccb_expiry_accepted" name="ccb_options[expiry_accepted]"
+                            value="<?php echo esc_attr($opts['expiry_accepted']); ?>" min="1" max="365" class="small-text">
+                        <p class="description"><?php esc_html_e('Default: 90 days. Recommended: 90–180.', 'cookie-consent-banner'); ?></p>
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><label for="ccb_expiry_rejected">Po odrzuceniu (dni)</label></th>
+                    <th scope="row"><label for="ccb_expiry_rejected"><?php esc_html_e('After rejection (days)', 'cookie-consent-banner'); ?></label></th>
                     <td>
-                        <input
-                            type="number"
-                            id="ccb_expiry_rejected"
-                            name="ccb_options[expiry_rejected]"
-                            value="<?php echo esc_attr($opts['expiry_rejected']); ?>"
-                            min="1" max="365"
-                            class="small-text">
-                        <p class="description">
-                            Domyślnie 1 dzień. Ustaw wyżej jeśli nie chcesz zbyt często pokazywać banera.
-                        </p>
+                        <input type="number" id="ccb_expiry_rejected" name="ccb_options[expiry_rejected]"
+                            value="<?php echo esc_attr($opts['expiry_rejected']); ?>" min="1" max="365" class="small-text">
+                        <p class="description"><?php esc_html_e('Default: 1 day. Increase if you don\'t want to show the banner too often.', 'cookie-consent-banner'); ?></p>
                     </td>
                 </tr>
 
             </table>
 
             <!-- ==================== INTERFEJS ==================== -->
-            <h2 class="title">Interfejs</h2>
+            <h2 class="title"><?php esc_html_e('Interface', 'cookie-consent-banner'); ?></h2>
             <table class="form-table" role="presentation">
 
                 <tr>
-                    <th scope="row">Pozycja banera (poziomo)</th>
+                    <th scope="row"><?php esc_html_e('Banner position (horizontal)', 'cookie-consent-banner'); ?></th>
                     <td>
                         <fieldset>
-                            <legend class="screen-reader-text">Pozycja banera</legend>
-                            <?php foreach (['left' => 'Lewy', 'center' => 'Środek', 'right' => 'Prawy'] as $val => $label) : ?>
+                            <legend class="screen-reader-text"><?php esc_html_e('Banner position', 'cookie-consent-banner'); ?></legend>
+                            <?php
+                            $positions = [
+                                'left'   => __('Left', 'cookie-consent-banner'),
+                                'center' => __('Center', 'cookie-consent-banner'),
+                                'right'  => __('Right', 'cookie-consent-banner'),
+                            ];
+                            foreach ($positions as $val => $label) : ?>
                                 <label style="margin-right: 1.5rem;">
-                                    <input
-                                        type="radio"
-                                        name="ccb_options[banner_position]"
+                                    <input type="radio" name="ccb_options[banner_position]"
                                         value="<?php echo esc_attr($val); ?>"
                                         <?php checked($val, $opts['banner_position']); ?>>
                                     <?php echo esc_html($label); ?>
                                 </label>
                             <?php endforeach; ?>
-                            <p class="description">Baner przykleja się do dolnej krawędzi, pozycja tylko pozioma.</p>
+                            <p class="description"><?php esc_html_e('Banner sticks to the bottom edge, horizontal position only.', 'cookie-consent-banner'); ?></p>
                         </fieldset>
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><label for="ccb_banner_max_width">Maksymalna szerokość banera</label></th>
+                    <th scope="row"><label for="ccb_banner_max_width"><?php esc_html_e('Maximum banner width', 'cookie-consent-banner'); ?></label></th>
                     <td>
-                        <input
-                            type="text"
-                            id="ccb_banner_max_width"
-                            name="ccb_options[banner_max_width]"
+                        <input type="text" id="ccb_banner_max_width" name="ccb_options[banner_max_width]"
                             value="<?php echo esc_attr($opts['banner_max_width']); ?>"
-                            class="small-text"
-                            placeholder="64ch"
-                            pattern="\d+(ch|px|rem|em|vw|%)">
+                            class="small-text" placeholder="64ch" pattern="\d+(ch|px|rem|em|vw|%)">
                         <p class="description">
-                            Jednostki: <code>ch</code>, <code>px</code>, <code>rem</code>, <code>em</code>, <code>vw</code>, <code>%</code>.
-                            Domyślnie <code>64ch</code>. Nigdy nie przekroczy 100%.
+                            <?php
+                            printf(
+                                /* translators: %s: list of allowed CSS units */
+                                esc_html__('Units: %s. Default: 64ch. Never exceeds 100%%.', 'cookie-consent-banner'),
+                                '<code>ch</code>, <code>px</code>, <code>rem</code>, <code>em</code>, <code>vw</code>, <code>%</code>'
+                            );
+                            ?>
                         </p>
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row">Pozycja przycisku przywracania</th>
+                    <th scope="row"><?php esc_html_e('Restore button position', 'cookie-consent-banner'); ?></th>
                     <td>
                         <fieldset>
-                            <legend class="screen-reader-text">Pozycja przycisku przywracania banera</legend>
+                            <legend class="screen-reader-text"><?php esc_html_e('Restore button position', 'cookie-consent-banner'); ?></legend>
                             <label style="margin-right: 1.5rem;">
-                                <input
-                                    type="radio"
-                                    name="ccb_options[toggle_position]"
-                                    value="left"
+                                <input type="radio" name="ccb_options[toggle_position]" value="left"
                                     <?php checked('left', $opts['toggle_position']); ?>>
-                                Lewy dolny róg
+                                <?php esc_html_e('Bottom left', 'cookie-consent-banner'); ?>
                             </label>
                             <label>
-                                <input
-                                    type="radio"
-                                    name="ccb_options[toggle_position]"
-                                    value="right"
+                                <input type="radio" name="ccb_options[toggle_position]" value="right"
                                     <?php checked('right', $opts['toggle_position']); ?>>
-                                Prawy dolny róg
+                                <?php esc_html_e('Bottom right', 'cookie-consent-banner'); ?>
                             </label>
                         </fieldset>
                     </td>
@@ -405,7 +425,19 @@ function ccb_render_settings_page(): void
 
             </table>
 
-            <?php submit_button('Zapisz ustawienia'); ?>
+            <p class="submit">
+                <?php submit_button(__('Save settings', 'cookie-consent-banner'), 'primary', 'submit', false); ?>
+                &nbsp;
+                <button
+                    type="submit"
+                    name="ccb_options[reset]"
+                    value="1"
+                    class="button button-secondary"
+                    onclick="return confirm('<?php esc_attr_e('Reset all settings to defaults? This cannot be undone.', 'cookie-consent-banner'); ?>')">
+                    <?php esc_html_e('Reset to defaults', 'cookie-consent-banner'); ?>
+                </button>
+            </p>
+
         </form>
     </div>
 <?php
