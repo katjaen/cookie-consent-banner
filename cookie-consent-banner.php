@@ -15,6 +15,7 @@
 
 if (!defined('ABSPATH')) exit;
 
+define('CCB_VERSION', '2.5.0');
 define('CCB_PATH', plugin_dir_path(__FILE__));
 define('CCB_URL',  plugin_dir_url(__FILE__));
 
@@ -90,7 +91,7 @@ add_action('wp_enqueue_scripts', function () {
     'ccb-style',
     CCB_URL . 'assets/cookie.css',
     [],
-    '2.5.0'
+    CCB_VERSION
   );
 
   $max_width       = esc_attr(ccb_get('banner_max_width') ?: '64ch');
@@ -111,7 +112,7 @@ add_action('wp_enqueue_scripts', function () {
     'ccb-script',
     CCB_URL . 'assets/cookie.js',
     [],
-    '2.5.0',
+    CCB_VERSION,
     true
   );
 
