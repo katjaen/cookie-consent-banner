@@ -159,7 +159,7 @@
 	box-shadow: 0 -4px 24px color-mix(in srgb, var(--ccb-text) 10%, transparent);
 
 	width: max-content;
-	max-width: 100%;
+	max-width: calc(100% - var(--ccb-gutter) * 2);
 	max-height: 85vh;
 	overflow-y: auto;
 	overflow-x: hidden;
