@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-18T22:14:15+00:00\n"
+"POT-Creation-Date: 2026-04-19T11:04:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: cookie-consent-banner\n"
@@ -100,7 +100,7 @@ msgid "Format: %s. If set, analytics cookies are enabled automatically."
 msgstr ""
 
 #: includes/ccb-settings.php:213
-#: templates/banner.php:99
+#: templates/banner.php:103
 msgid "Analytics cookies"
 msgstr ""
 
@@ -117,7 +117,7 @@ msgid "Per GDPR, the toggle in the banner always starts as disabled regardless o
 msgstr ""
 
 #: includes/ccb-settings.php:235
-#: templates/banner.php:120
+#: templates/banner.php:124
 msgid "Marketing cookies"
 msgstr ""
 
@@ -291,7 +291,7 @@ msgid "Bottom right"
 msgstr ""
 
 #: includes/ccb-settings.php:429
-#: templates/banner.php:138
+#: templates/banner.php:142
 msgid "Save settings"
 msgstr ""
 
@@ -303,50 +303,63 @@ msgstr ""
 msgid "Reset to defaults"
 msgstr ""
 
-#: templates/banner.php:36
+#: templates/banner.php:27
+msgid "Cookie consent"
+msgstr ""
+
+#: templates/banner.php:37
 msgid "Cookie information"
 msgstr ""
 
-#: templates/banner.php:47
+#: templates/banner.php:48
+msgid "Accept all cookies"
+msgstr ""
+
+#: templates/banner.php:49
 msgid "Accept all"
 msgstr ""
 
-#: templates/banner.php:50
-msgid "Reject all"
+#: templates/banner.php:52
+msgid "Reject all cookies"
 msgstr ""
 
 #: templates/banner.php:53
-msgid "Customize settings"
+msgid "Reject all"
 msgstr ""
 
-#: templates/banner.php:61
+#: templates/banner.php:56
+#: templates/banner.php:65
 msgid "Customize cookie settings"
 msgstr ""
 
-#: templates/banner.php:67
+#: templates/banner.php:57
+msgid "Customize settings"
+msgstr ""
+
+#: templates/banner.php:71
 msgid "Technical cookies"
 msgstr ""
 
-#: templates/banner.php:68
+#: templates/banner.php:72
 msgid "Always active"
 msgstr ""
 
-#: templates/banner.php:79
+#: templates/banner.php:83
 msgid "Functional cookies"
 msgstr ""
 
-#: templates/banner.php:87
+#: templates/banner.php:91
 msgid "Enable or disable functional cookies"
 msgstr ""
 
-#: templates/banner.php:107
+#: templates/banner.php:111
 msgid "Enable or disable analytics cookies"
 msgstr ""
 
-#: templates/banner.php:128
+#: templates/banner.php:132
 msgid "Enable or disable marketing cookies"
 msgstr ""
 
-#: templates/banner.php:152
+#: templates/banner.php:156
 msgid "Open cookie settings"
 msgstr ""

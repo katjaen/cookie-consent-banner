@@ -1,5 +1,5 @@
 /**
- * Cookie Consent Banner – cookie.js  v2.3.0
+ * Cookie Consent Banner – cookie.js  v2.5.0
  *
  * Moduły:
  *  UI       – stany banera (BANNER / OPTIONS / HIDDEN)
@@ -87,7 +87,7 @@
 					setTimeout(() => {
 						Focus.trap(banner);
 						el.acceptAll()?.focus();
-					}, 50);
+					}, 100);
 					break;
 
 				// Dostosuj / powrót: opcje widoczne, opis + przyciski ukryte

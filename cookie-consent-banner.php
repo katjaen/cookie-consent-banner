@@ -135,5 +135,6 @@ add_action('wp_enqueue_scripts', function () {
 // ==========================
 
 add_action('wp_footer', function () {
+  if (isset($_GET['bricks'])) return;
   include CCB_PATH . 'templates/banner.php';
 });

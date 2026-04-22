@@ -24,8 +24,9 @@ $allowed_tags = [
     class="cookie-banner display--none"
     role="dialog"
     aria-labelledby="cookie-banner-heading"
+    aria-label="<?php esc_attr_e('Cookie consent', 'cookie-consent-banner'); ?>"
     aria-modal="true">
-    <div class="cookie-banner__inner">
+    <div class="cookie-banner__inner" role="document">
 
         <!-- INTRO -->
         <div class="cookie-banner__intro">
@@ -43,13 +44,16 @@ $allowed_tags = [
                 <?php echo wp_kses(ccb_get('banner_desc'), $allowed_tags); ?>
             </p>
             <div class="cookie-banner__actions">
-                <button id="accept-all-cookies-btn" class="btn btn--primary" type="button">
+                <button id="accept-all-cookies-btn" class="btn btn--primary" type="button"
+                    aria-label="<?php esc_attr_e('Accept all cookies', 'cookie-consent-banner'); ?>">
                     <?php esc_html_e('Accept all', 'cookie-consent-banner'); ?>
                 </button>
-                <button id="deny-all-cookies-btn" class="btn btn--outline" type="button">
+                <button id="deny-all-cookies-btn" class="btn btn--outline" type="button"
+                    aria-label="<?php esc_attr_e('Reject all cookies', 'cookie-consent-banner'); ?>">
                     <?php esc_html_e('Reject all', 'cookie-consent-banner'); ?>
                 </button>
-                <button id="customize-cookie-preferences-btn" class="btn btn--ghost" type="button">
+                <button id="customize-cookie-preferences-btn" class="btn btn--ghost" type="button"
+                    aria-label="<?php esc_attr_e('Customize cookie settings', 'cookie-consent-banner'); ?>">
                     <?php esc_html_e('Customize settings', 'cookie-consent-banner'); ?>
                 </button>
             </div>
