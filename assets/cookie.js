@@ -168,6 +168,15 @@
 			const gtmId = CONFIG.gtmId;
 			const allowed = TRACKING_TYPES.some(t => preferences[t]);
 
+			if (typeof window.gtag === "function") {
+				window.gtag("consent", "update", {
+					ad_storage: preferences.marketing ? "granted" : "denied",
+					ad_user_data: preferences.marketing ? "granted" : "denied",
+					ad_personalization: preferences.marketing ? "granted" : "denied",
+					analytics_storage: preferences.analytics ? "granted" : "denied",
+				});
+			}
+
 			if (allowed && gtmId) this._loadGTM(gtmId);
 
 			window.dataLayer = window.dataLayer || [];
@@ -180,6 +189,14 @@
 		},
 
 		disable() {
+			if (typeof window.gtag === "function") {
+				window.gtag("consent", "update", {
+					ad_storage: "denied",
+					ad_user_data: "denied",
+					ad_personalization: "denied",
+					analytics_storage: "denied",
+				});
+			}
 			this._clearTrackingCookies();
 		},
 
