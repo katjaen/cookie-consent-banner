@@ -330,7 +330,19 @@ function ccb_render_settings_page(): void
                 <?php ccb_textarea_field('desc_technical',  __('Technical',   'cookie-consent-banner'), __('Always visible, toggle disabled.', 'cookie-consent-banner'), $opts); ?>
                 <?php ccb_textarea_field('desc_functional', __('Functional',  'cookie-consent-banner'), '', $opts); ?>
                 <?php ccb_textarea_field('desc_analytics',  __('Analytics',   'cookie-consent-banner'), __('Visible only when analytics section is enabled.', 'cookie-consent-banner'), $opts); ?>
-                <?php ccb_textarea_field('desc_marketing',  __('Marketing',   'cookie-consent-banner'), __('Visible only when marketing section is enabled.', 'cookie-consent-banner'), $opts); ?>
+                <?php ccb_textarea_field(
+                    'desc_marketing',
+                    __('Marketing', 'cookie-consent-banner'),
+                    __('Visible only when marketing section is enabled.', 'cookie-consent-banner'),
+                    $opts
+                ); ?>
+                <tr>
+                    <td colspan="2">
+                        <p class="description" style="background:#fff8e5; border-left:4px solid #dba617; padding:.75rem 1rem; margin-top:-0.5rem;">
+                            ⚠️ <?php esc_html_e('Important: make sure this description accurately reflects what marketing cookies actually do on your site. If you only measure ad conversions (e.g. Google Ads), say so explicitly — do not claim "personalized ads" unless remarketing/audience campaigns are actually active. Under GDPR, consent descriptions must match real data processing.', 'cookie-consent-banner'); ?>
+                        </p>
+                    </td>
+                </tr>
 
             </table>
 

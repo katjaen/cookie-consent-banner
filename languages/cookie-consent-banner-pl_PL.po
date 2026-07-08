@@ -262,6 +262,22 @@ msgstr "Marketingowe"
 msgid "Visible only when marketing section is enabled."
 msgstr "Widoczne tylko po włączeniu sekcji marketingowej."
 
+#. translators: Warning shown to admins next to the marketing description field
+#: includes/ccb-settings.php:335
+msgid ""
+"Important: make sure this description accurately reflects what marketing "
+"cookies actually do on your site. If you only measure ad conversions (e.g. "
+"Google Ads), say so explicitly — do not claim \"personalized ads\" unless "
+"remarketing/audience campaigns are actually active. Under GDPR, consent "
+"descriptions must match real data processing."
+msgstr ""
+"Ważne: upewnij się, że ten opis dokładnie odzwierciedla, do czego faktycznie "
+"służą cookies marketingowe na Twojej stronie. Jeśli mierzysz wyłącznie "
+"konwersje reklamowe (np. Google Ads), napisz to wprost — nie pisz o "
+"„personalizacji reklam”, jeśli kampanie remarketingowe / oparte na odbiorcach "
+"nie są faktycznie aktywne. Zgodnie z RODO, opis zgody musi odpowiadać "
+"rzeczywistemu przetwarzaniu danych."
+
 #: includes/ccb-settings.php:338
 msgid "Cookie expiry"
 msgstr "Wygaśnięcie pliku cookie"

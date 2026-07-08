@@ -83,6 +83,39 @@ add_action('wp_head', function () {
 }, 1);
 
 // ==========================
+// CONSENT MODE — DOMYŚLNY STAN
+// ==========================
+
+/**
+ * Ustawia domyślny stan zgody Google Consent Mode na "denied"
+ * dla wszystkich sygnałów, zanim jakikolwiek tag Google się załaduje.
+ *
+ * Musi wykonać się jak najwcześniej w <head> — stąd priority 1,
+ * tak samo jak PRECONNECT powyżej.
+ *
+ * Aktualizacja tych wartości na podstawie realnego wyboru użytkownika
+ * odbywa się w cookie.js (Tracking.enable / Tracking.disable).
+ */
+add_action('wp_head', function () {
+  if (!ccb_get('gtm_id')) return;
+?>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied'
+    });
+  </script>
+<?php
+}, 1);
+
+// ==========================
 // ENQUEUE
 // ==========================
 

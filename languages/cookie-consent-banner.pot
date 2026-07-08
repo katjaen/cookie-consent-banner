@@ -73,6 +73,11 @@ msgstr ""
 msgid "Personalize ads and measure their effectiveness."
 msgstr ""
 
+#. translators: Warning shown to admins next to the marketing description field
+#: includes/ccb-settings.php:335
+msgid "Important: make sure this description accurately reflects what marketing cookies actually do on your site. If you only measure ad conversions (e.g. Google Ads), say so explicitly — do not claim \"personalized ads\" unless remarketing/audience campaigns are actually active. Under GDPR, consent descriptions must match real data processing."
+msgstr ""
+
 #: includes/ccb-settings.php:76
 msgid "Settings have been reset to defaults."
 msgstr ""
