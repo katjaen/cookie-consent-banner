@@ -15,30 +15,36 @@
 @layer ccb-defaults {
 	:root {
 		/* Kolory bazowe
-           Używamy --body-color i --body-bg-color z ACSS –
+           Używamy --text-color i --body-bg-color z motywu –
            automatycznie reagują na dark/light mode motywu.
-           Fallbacki dla środowisk bez ACSS.                */
+           Fallbacki dla środowisk bez tych tokenów.         */
 		--ccb-primary: var(--primary, var(--accent, #718ac2));
-		--ccb-text: var(--body-color, #1a1a1a);
+		--ccb-text: var(--text-color, #1a1a1a);
 		--ccb-bg: color-mix(
 			in srgb,
 			var(--body-bg-color, #ffffff) 92%,
 			transparent
 		);
-		--ccb-border: var(--neutral-light, #e0e0e0);
-		--ccb-toggle-off: var(--neutral-light, #c8c8c8);
+		--ccb-border: var(--base-light, #e0e0e0);
+		--ccb-toggle-off: var(--base-light, #c8c8c8);
 
 		/* Transparentności generowane z bazowych kolorów */
-		--ccb-text-muted: color-mix(in srgb, var(--ccb-text) 75%, transparent);
+		--ccb-text-muted: var(
+			--text-muted,
+			color-mix(in srgb, var(--ccb-text) 75%, transparent)
+		);
 		--ccb-text-subtle: color-mix(in srgb, var(--ccb-text) 55%, transparent);
-		--ccb-border-subtle: color-mix(in srgb, var(--ccb-border) 80%, transparent);
+		--ccb-border-color-muted: var(
+			--border-color-muted,
+			color-mix(in srgb, var(--ccb-border) 80%, transparent)
+		);
 
 		/* Przestrzeń */
 		--ccb-gap: var(--space-s, 1rem);
 		--ccb-gap-xs: var(--space-xs, 0.5rem);
 		--ccb-padding: var(--space-m, 1.5rem);
 		--ccb-gutter: var(--gutter, 1rem);
-		--ccb-radius: var(--radius, 12px);
+		--ccb-radius: var(--radius, 8px);
 		--ccb-max-width: var(
 			--ccb-banner-max-width,
 			64ch
@@ -59,18 +65,41 @@
 
 		/* Btn fallback (gdy brak Automatic.css) */
 		--ccb-btn-radius: var(--btn-radius, var(--ccb-radius));
-		--ccb-btn-padding: var(--btn-padding, 0.5em 1.25em);
+		--ccb-btn-padding-block: var(--btn-padding-block, 0.5em);
+		--ccb-btn-padding-inline: var(
+			--btn-padding-inline,
+			calc(var(--ccb-btn-padding-block) * 1.5)
+		);
 		--ccb-btn-font-size: var(--btn-font-size, var(--ccb-font-size-base));
 		--ccb-btn-font-weight: var(--btn-font-weight, 600);
 		--ccb-btn-transition: var(--ccb-transition);
 	}
+	/* System OS w trybie dark — fallback dla stron bez ręcznego
+	   przełącznika motywu (patrz .color-scheme--alt niżej). */
 	@media (prefers-color-scheme: dark) {
-		:root {
+		:root:not(.color-scheme--alt) {
 			--ccb-text: #f0f0f0;
 			--ccb-bg: rgba(24, 24, 24, 0.85);
 			--ccb-border: #3a3a3a;
 			--ccb-toggle-off: #555;
 		}
+	}
+
+	/* Ręczny przełącznik motywu (katjaen-theme: .color-scheme--alt na
+	   <html>). --ccb-text/--ccb-bg/--ccb-border już podążają za tym
+	   automatycznie przez var(--text-color)/var(--body-bg-color) —
+	   ale tylko gdy motyw je faktycznie nadpisuje w tej klasie. Gdy
+	   motyw tego nie robi (lub go nie ma), używamy tych samych
+	   twardych wartości co przy OS dark, żeby zachowanie było spójne. */
+	:root.color-scheme--alt {
+		--ccb-text: var(--text-color, #f0f0f0);
+		--ccb-bg: color-mix(
+			in srgb,
+			var(--body-bg-color, rgba(24, 24, 24, 0.85)) 92%,
+			transparent
+		);
+		--ccb-border: var(--base-light, #3a3a3a);
+		--ccb-toggle-off: var(--base-light, #555);
 	}
 }
 
@@ -86,7 +115,8 @@
 	align-items: center;
 	justify-content: center;
 	gap: 0.375em;
-	padding: var(--ccb-btn-padding);
+	padding-block: var(--ccb-btn-padding-block);
+	padding-inline: var(--ccb-btn-padding-inline);
 	font-size: var(--ccb-btn-font-size);
 	font-weight: var(--ccb-btn-font-weight);
 	line-height: 1.2;
@@ -233,7 +263,7 @@
 .cookie-options {
 	display: flex;
 	flex-direction: column;
-	border-top: 1px solid var(--ccb-border-subtle);
+	border-top: 1px solid var(--ccb-border-color-muted);
 	padding-top: var(--ccb-gap);
 	gap: 0;
 }
@@ -254,7 +284,7 @@
 
 .cookie-option {
 	padding: var(--ccb-gap-xs) 0;
-	border-bottom: 1px solid var(--ccb-border-subtle);
+	border-bottom: 1px solid var(--ccb-border-color-muted);
 }
 
 .cookie-option:last-of-type {
