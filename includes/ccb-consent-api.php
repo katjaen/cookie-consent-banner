@@ -168,8 +168,8 @@ function ccb_youtube_nocookie(string $content): string
     if (!ccb_get('yt_nocookie')) return $content;
 
     return preg_replace(
-        '~(src|data-src)=["\']https?://(?:www\.)?youtube\.com/(embed/[^"\'?\s]+)~i',
-        '$1="https://www.youtube-nocookie.com/$2',
+        '~(src|data-src)=(["\'])https?://(?:www\.)?youtube\.com/(embed/[^"\'?\s]+)~i',
+        '$1=$2https://www.youtube-nocookie.com/$3',
         $content
     );
 }

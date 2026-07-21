@@ -127,7 +127,7 @@
 		},
 
 		save(preferences) {
-			const anyAccepted = Object.values(preferences).includes(true);
+			const anyAccepted = TRACKING_TYPES.some(t => preferences[t]);
 			const days = anyAccepted ? EXPIRY.accepted : EXPIRY.rejected;
 			for (const type in COOKIE_TYPES) {
 				if (type in preferences) {
@@ -234,10 +234,10 @@
 				.filter(n => n.startsWith("_ga_"));
 
 			const all = [...staticList, ...ga4Cookies];
-			const domains = location.hostname
-				.split(".")
-				.map((_, i, a) => "." + a.slice(i).join("."))
-				.slice(0, -1);
+			const labels = location.hostname.split(".");
+			const domains = labels.length > 1
+				? labels.map((_, i) => "." + labels.slice(i).join(".")).slice(0, -1)
+				: ["." + location.hostname];
 
 			all.forEach(name => {
 				domains.forEach(d => {
