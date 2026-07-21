@@ -1,0 +1,14 @@
+{
+	"name": "cookie-consent-banner-tests",
+	"version": "1.0.0",
+	"private": true,
+	"scripts": {
+		"test": "npm run test:js && npm run test:php",
+		"test:js": "jest",
+		"test:php": "php tests/php/test-sanitize-options.php && php tests/php/test-consent-api-and-youtube.php && php tests/php/test-settings-defaults-and-hooks.php && php tests/php/test-hooks-with-gtm-and-position.php"
+	},
+	"devDependencies": {
+		"jest": "^30.0.0",
+		"jest-environment-jsdom": "^30.0.0"
+	}
+}

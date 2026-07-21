@@ -454,4 +454,29 @@
 	} else {
 		init();
 	}
+
+	// Nieszkodliwe w przeglądarce (tam "module" nie istnieje) — pozwala testom
+	// jednostkowym (Jest, patrz tests/) importować wewnętrzne moduły bez
+	// bundlera. Musi siedzieć TUTAJ, wewnątrz IIFE (a nie faktycznie na końcu
+	// pliku) — dopiero stąd ma dostęp do domknięcia z COOKIE_TYPES, Storage,
+	// Toggles, UI, Tracking itd. Nie zmienia żadnego zachowania w przeglądarce
+	// (init() powyżej i tak już się wykonał/zarejestrował).
+	if (typeof module !== "undefined" && module.exports) {
+		module.exports = {
+			COOKIE_TYPES,
+			TRACKING_TYPES,
+			Storage,
+			Toggles,
+			UI,
+			Tracking,
+			buildPreferences,
+			applyAndClose,
+			loadToToggles,
+			handleAcceptAll,
+			handleDenyAll,
+			handleSave,
+			handleCustomize,
+			handleToggleBtn,
+		};
+	}
 })();

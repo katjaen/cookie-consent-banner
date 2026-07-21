@@ -10,7 +10,7 @@ A lightweight, accessible, GDPR-compliant cookie consent plugin for WordPress �
 
 Most cookie consent plugins are either too heavy (loading external scripts, fonts, tracking SDKs before consent) or too simple (no accessibility, no real GDPR compliance). This one is different:
 
-- **~5kb JS**, loaded deferred in footer — does not block rendering
+- **~12kb JS (~4kb gzipped)**, loaded deferred in footer — does not block rendering
 - **Zero external dependencies** — no jQuery, no lodash, no third-party APIs
 - **Fully accessible** — keyboard navigation, screen reader support, focus management (see [Accessibility](#accessibility))
 - **GDPR-compliant** — consent stored as separate HTTP cookies per type, GTM loads only after consent, functional cookies default to `true` (legitimate interest), analytics/marketing default to `false`
@@ -115,6 +115,7 @@ All options available in **WP Admin → Settings → Cookie Banner**:
 | Banner position        | Left / Center / Right (horizontal only)                            |
 | Banner max width       | CSS value: `ch`, `px`, `rem`, `em`, `vw`, `%` (default: `64ch`)    |
 | Toggle button position | Left or right corner of screen                                     |
+| Reset to defaults      | Button that resets all plugin options back to their default values |
 
 ---
 
@@ -207,7 +208,7 @@ This enables plugins like [Embed Privacy](https://wordpress.org/plugins/embed-pr
 
 ## Internationalization (i18n)
 
-All static UI strings (button labels, headings, ARIA labels) are wrapped in `__()` and ready for translation via `.po`/`.mo` files. The plugin includes a `languages/` directory and registers its text domain on `plugins_loaded`.
+All static UI strings (button labels, headings, ARIA labels) are wrapped in `__()` and ready for translation via `.po`/`.mo` files. The plugin includes a `languages/` directory and registers its text domain on `init`.
 
 A `.pot` template file is included in `languages/cookie-consent-banner.pot` — you don't need to scan the source code yourself.
 
