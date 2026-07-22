@@ -75,9 +75,14 @@
 		--ccb-btn-transition: var(--ccb-transition);
 	}
 	/* System OS w trybie dark — fallback dla stron bez ręcznego
-	   przełącznika motywu (patrz .color-scheme--alt niżej). */
+	   przełącznika motywu (patrz .color-scheme--alt niżej).
+	   WAŻNE: wykluczamy TEŻ .color-scheme--light i .a11y-contrast —
+	   bez tego wymuszenie jasnego/kontrastu (katjaen-theme, pasek
+	   dostępności) było ignorowane, gdy system jest w trybie dark:
+	   ta reguła i tak wygrywała twardymi wartościami, zamiast oddać
+	   pole jawnemu wyborowi użytkownika. Znalezione 2026-07-23. */
 	@media (prefers-color-scheme: dark) {
-		:root:not(.color-scheme--alt) {
+		:root:not(.color-scheme--alt):not(.color-scheme--light):not(.a11y-contrast) {
 			--ccb-text: #f0f0f0;
 			--ccb-bg: rgba(24, 24, 24, 0.85);
 			--ccb-border: #3a3a3a;
@@ -100,6 +105,28 @@
 		);
 		--ccb-border: var(--base-light, #3a3a3a);
 		--ccb-toggle-off: var(--base-light, #555);
+	}
+
+	/* Wymuszony JASNY (katjaen-theme: .color-scheme--light) — jawny
+	   blok zamiast polegania na fallbacku z bazowego :root, żeby
+	   zachowanie było spójne z .color-scheme--alt powyżej (ten sam
+	   wzorzec: czytaj token motywu, z sensownym fallbackiem). */
+	:root.color-scheme--light {
+		--ccb-text: var(--text-color, #1a1a1a);
+		--ccb-bg: color-mix(in srgb, var(--body-bg-color, #ffffff) 92%, transparent);
+		--ccb-border: var(--base-light, #e0e0e0);
+		--ccb-toggle-off: var(--base-light, #c8c8c8);
+	}
+
+	/* Wysoki kontrast (katjaen-theme: .a11y-contrast) — WYŁĄCZNA
+	   warstwa względem dark/light (ten sam wzorzec co w theme.css).
+	   Jawne wartości, nie fallback przez var() — kontrast ma być
+	   maksymalny, nie "jakiś", niezależnie od reszty tokenów. */
+	:root.a11y-contrast {
+		--ccb-text: #ffff00;
+		--ccb-bg: #000000;
+		--ccb-border: #ffff00;
+		--ccb-toggle-off: #ffff00;
 	}
 }
 
