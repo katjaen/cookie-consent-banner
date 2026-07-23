@@ -22,11 +22,24 @@
 		--ccb-text: var(--text-color, #1a1a1a);
 		--ccb-bg: color-mix(
 			in srgb,
-			var(--body-bg-color, #ffffff) 92%,
+			var(--body-bg-color, #ffffff) 90%,
 			transparent
 		);
-		--ccb-border: var(--base-light, #e0e0e0);
-		--ccb-toggle-off: var(--base-light, #c8c8c8);
+		/* BYŁO var(--base-light, ...) — --base-light to STAŁY punkt na
+		   skali (nie light-dark()), więc dawał TĘ SAMĄ wartość w light
+		   i alt/dark (ta sama stała base-light wszędzie niżej w pliku) —
+		   realnie się nie odwracał. Teraz: --border-color z theme (samo
+		   już poprawnie reaguje, 2026-07-23) z lokalnym fallbackiem z
+		   --ccb-text (ten sam wzorzec co --ccb-text-muted niżej).
+		   Dzięki temu .color-scheme--alt/--light NIE muszą już osobno
+		   nadpisywać --ccb-border/--ccb-toggle-off (usunięte niżej) —
+		   dziedziczą automatycznie, tak jak --text-muted w theme.css.
+		   Znalezione 2026-07-23 przy audycie "wszystkie cssy pod tym kątem". */
+		--ccb-border: var(
+			--border-color,
+			color-mix(in srgb, var(--ccb-text) 20%, transparent)
+		);
+		--ccb-toggle-off: color-mix(in srgb, var(--ccb-text) 20%, transparent);
 
 		/* Transparentności generowane z bazowych kolorów */
 		--ccb-text-muted: var(
@@ -82,11 +95,15 @@
 	   ta reguła i tak wygrywała twardymi wartościami, zamiast oddać
 	   pole jawnemu wyborowi użytkownika. Znalezione 2026-07-23. */
 	@media (prefers-color-scheme: dark) {
-		:root:not(.color-scheme--alt):not(.color-scheme--light):not(.a11y-contrast) {
+		:root:not(.color-scheme--alt):not(.color-scheme--light):not(
+				.a11y-contrast
+			) {
 			--ccb-text: #f0f0f0;
 			--ccb-bg: rgba(24, 24, 24, 0.85);
-			--ccb-border: #3a3a3a;
-			--ccb-toggle-off: #555;
+			/* --ccb-border/--ccb-toggle-off NIE sa tu juz nadpisywane
+			   (usuniete 2026-07-23) - formula z bazowego :root (color-mix
+			   na --ccb-text) przeliczy sie poprawnie z --ccb-text
+			   nadpisanym wyzej (#f0f0f0), bez duplikatu. */
 		}
 	}
 
@@ -103,8 +120,9 @@
 			var(--body-bg-color, rgba(24, 24, 24, 0.85)) 92%,
 			transparent
 		);
-		--ccb-border: var(--base-light, #3a3a3a);
-		--ccb-toggle-off: var(--base-light, #555);
+		/* --ccb-border/--ccb-toggle-off NIE sa tu nadpisywane - dziedzicza
+		   z bazowej formuly (color-mix na --ccb-text), tak jak --text-muted
+		   w theme.css. */
 	}
 
 	/* Wymuszony JASNY (katjaen-theme: .color-scheme--light) — jawny
@@ -113,9 +131,13 @@
 	   wzorzec: czytaj token motywu, z sensownym fallbackiem). */
 	:root.color-scheme--light {
 		--ccb-text: var(--text-color, #1a1a1a);
-		--ccb-bg: color-mix(in srgb, var(--body-bg-color, #ffffff) 92%, transparent);
-		--ccb-border: var(--base-light, #e0e0e0);
-		--ccb-toggle-off: var(--base-light, #c8c8c8);
+		--ccb-bg: color-mix(
+			in srgb,
+			var(--body-bg-color, #ffffff) 92%,
+			transparent
+		);
+		/* --ccb-border/--ccb-toggle-off NIE sa tu nadpisywane - dziedzicza
+		   z bazowej formuly (color-mix na --ccb-text). */
 	}
 
 	/* Wysoki kontrast (katjaen-theme: .a11y-contrast) — WYŁĄCZNA
