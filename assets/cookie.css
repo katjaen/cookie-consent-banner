@@ -169,6 +169,16 @@
 	opacity: 0.88;
 }
 
+/* Ten sam bug co w .ka-a11y-btn[aria-pressed] i sitewide --btn-color
+   (katjaen-theme): --ccb-primary sledzi --primary, ktore w wysokim
+   kontraście (.a11y-contrast) staje sie zolte - bialy tekst na zoltym
+   ma katastrofalny kontrast (~1.07:1). Czarny dziala i tu, i na
+   domyslnym (kolorowym) --ccb-primary. Specyficznosc (0,3,0) > (0,1,0)
+   bazowej reguly - wygrywa bez !important. */
+:root.a11y-contrast :where(.cookie-banner) .btn--primary {
+	color: #000;
+}
+
 :where(.cookie-banner) .btn--outline {
 	background: transparent;
 	color: var(--ccb-primary);
