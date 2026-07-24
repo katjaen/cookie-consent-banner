@@ -162,6 +162,16 @@ The plugin uses its own design tokens that inherit from your theme when availabl
 
 Works with [Automatic.css](https://automaticcss.com/) out of the box — all tokens fall back to ACSS variables when available.
 
+### Dark / light / high-contrast
+
+The banner mirrors `katjaen-theme`'s three appearance states as explicit `<html>` classes (each with its own block in `cookie.css`, not left to inherit from the base `:root` fallbacks):
+
+- `:root.color-scheme--alt` — forced dark
+- `:root.color-scheme--light` — forced light (wins even when the OS is in dark mode)
+- `:root.a11y-contrast` — high contrast (WCAG accessibility bar); mutually exclusive with the two above, never combined
+
+Without `katjaen-theme` active, the banner still respects `prefers-color-scheme: dark` on its own. If you fork this plugin for a project without `katjaen-theme`'s toggle, these three selectors are dead code — safe to leave in place, they just never match.
+
 ---
 
 ## WP Consent API
