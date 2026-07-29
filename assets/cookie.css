@@ -22,7 +22,7 @@
 		--ccb-text: var(--text-color, #1a1a1a);
 		--ccb-bg: color-mix(
 			in srgb,
-			var(--body-bg-color, #ffffff) 90%,
+			var(--body-bg-color, #ffffff) 70%,
 			transparent
 		);
 		/* BYŁO var(--base-light, ...) — --base-light to STAŁY punkt na
@@ -40,6 +40,7 @@
 			color-mix(in srgb, var(--ccb-text) 20%, transparent)
 		);
 		--ccb-toggle-off: color-mix(in srgb, var(--ccb-text) 20%, transparent);
+		--ccb-toggle-thumb: var(--white, #fff);
 
 		/* Transparentności generowane z bazowych kolorów */
 		--ccb-text-muted: var(
@@ -149,6 +150,7 @@
 		--ccb-bg: #000000;
 		--ccb-border: #ffff00;
 		--ccb-toggle-off: #ffff00;
+		--ccb-toggle-thumb: #000000;
 	}
 }
 
@@ -409,7 +411,7 @@
 	width: 18px;
 	height: 18px;
 	border-radius: 50%;
-	background: #fff;
+	background: var(--ccb-toggle-thumb, #fff);
 	box-shadow: 0 1px 4px color-mix(in srgb, var(--ccb-text) 20%, transparent);
 	transition: transform var(--ccb-transition);
 	pointer-events: none;

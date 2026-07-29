@@ -235,9 +235,10 @@
 
 			const all = [...staticList, ...ga4Cookies];
 			const labels = location.hostname.split(".");
-			const domains = labels.length > 1
-				? labels.map((_, i) => "." + labels.slice(i).join(".")).slice(0, -1)
-				: ["." + location.hostname];
+			const domains =
+				labels.length > 1
+					? labels.map((_, i) => "." + labels.slice(i).join(".")).slice(0, -1)
+					: ["." + location.hostname];
 
 			all.forEach(name => {
 				domains.forEach(d => {
