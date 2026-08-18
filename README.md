@@ -6,6 +6,32 @@ A lightweight, accessible, GDPR-compliant cookie consent plugin for WordPress â€
 
 ---
 
+## Table of contents
+
+1. [Why this plugin](#why-this-plugin)
+2. [Features](#features)
+3. [Accessibility](#accessibility)
+   - [Dialog semantics](#dialog-semantics)
+   - [Focus trap](#focus-trap)
+   - [Toggle switches](#toggle-switches)
+   - [Keyboard support](#keyboard-support)
+   - [Focus visibility](#focus-visibility)
+   - [Screen reader text](#screen-reader-text)
+   - [Floating toggle button](#floating-toggle-button)
+   - [SVG icon](#svg-icon)
+4. [Settings](#settings)
+5. [Installation](#installation)
+   - [File structure](#file-structure)
+6. [CSS Custom Properties](#css-custom-properties)
+   - [Dark / light / high-contrast](#dark--light--high-contrast)
+7. [WP Consent API](#wp-consent-api)
+8. [GDPR notes](#gdpr-notes)
+9. [Requirements](#requirements)
+10. [Internationalization (i18n)](#internationalization-i18n)
+11. [License](#license)
+
+---
+
 ## Why this plugin
 
 Most cookie consent plugins are either too heavy (loading external scripts, fonts, tracking SDKs before consent) or too simple (no accessibility, no real GDPR compliance). This one is different:
