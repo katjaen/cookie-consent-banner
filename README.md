@@ -40,7 +40,7 @@ Most cookie consent plugins are either too heavy (loading external scripts, font
 - **~12kb JS (~4kb gzipped)**, loaded deferred in footer — does not block rendering
 - **Zero external dependencies** — no jQuery, no lodash, no third-party APIs
 - **Fully accessible** — keyboard navigation, screen reader support, focus management (see [Accessibility](#accessibility))
-- **GDPR-compliant** — consent stored as separate HTTP cookies per type, GTM loads only after consent, functional cookies default to `true` (legitimate interest), analytics/marketing default to `false`
+- **GDPR-compliant** — consent stored as separate HTTP cookies per type, GTM loads only after consent, all optional categories (functional, analytics, marketing) default to `false`; “Reject all” rejects them all
 - **GTM-based** — GA4, Facebook Pixel, Hotjar and any other tool configured in GTM loads automatically after consent, no extra code needed
 - **Microsoft Clarity** — consent is passed via `clarity('consentv2', …)` and withdrawn via `clarity('consent', false)` (see [Microsoft Clarity](#microsoft-clarity))
 - **WP Consent API** integration — works with Embed Privacy and other consent-aware plugins
@@ -133,6 +133,7 @@ All options available in **WP Admin → Settings → Cookie Banner**:
 | Setting                | Description                                                        |
 | ---------------------- | ------------------------------------------------------------------ |
 | GTM ID                 | Google Tag Manager ID (format: `GTM-XXXXXXX`)                      |
+| Show functional        | Toggle functional section in banner (off by default; only for third-party features such as chat or embeds) |
 | Show analytics         | Toggle analytics section in banner (auto-enabled when GTM ID set)  |
 | Show marketing         | Toggle marketing section in banner                                 |
 | YouTube nocookie       | Replace `youtube.com` with `youtube-nocookie.com` in embeds        |
@@ -238,8 +239,8 @@ Clarity is loaded as a tag in GTM (no separate ID in plugin settings). The plugi
 - GTM is loaded only after analytics or marketing consent
 - All tools configured inside GTM (GA4, Facebook Pixel, Hotjar etc.) inherit this consent gate automatically — no extra code needed
 - GA/tracking cookies are cleared on rejection
-- Functional cookies default to `true` (legitimate interest basis)
-- Analytics and marketing default to `false` (require active consent)
+- All optional categories (functional, analytics, marketing) default to `false` and require active consent; “Reject all” turns them all off. Preferences the visitor sets by clicking (e.g. contrast, font size) are not consent-gated – they are requested by the user
+- Pre-ticked toggles are not valid consent (CJEU Planet49), so none is pre-ticked
 - Consent expires after 90 days (accepted) or 1 day (rejected) — configurable
 
 > This plugin is a technical tool. It does not constitute legal advice. Consult a lawyer for full GDPR compliance assessment of your site.

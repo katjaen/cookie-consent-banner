@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cookie Consent Banner – Strona ustawień  v2.6.1
+ * Cookie Consent Banner – Strona ustawień  v2.7.0
  */
 
 if (!defined('ABSPATH')) exit;
@@ -39,6 +39,7 @@ function ccb_defaults(): array
 {
     return [
         'gtm_id'           => '',
+        'show_functional'  => '',
         'show_analytics'   => '1',
         'show_marketing'   => '',
         'yt_nocookie'      => '',
@@ -106,6 +107,7 @@ function ccb_sanitize_options(array $raw): array
 
     $clean = [
         'gtm_id'           => $gtm_id,
+        'show_functional'  => !empty($raw['show_functional']) ? '1' : '',
         'show_marketing'   => !empty($raw['show_marketing']) ? '1' : '',
         'yt_nocookie'      => !empty($raw['yt_nocookie'])    ? '1' : '',
         'expiry_accepted'  => max(1, min(365, (int) ($raw['expiry_accepted'] ?? $defaults['expiry_accepted']))),
@@ -222,6 +224,21 @@ function ccb_render_settings_page(): void
                             );
                             ?>
                         </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><?php esc_html_e('Functional cookies', 'cookie-consent-banner'); ?></th>
+                    <td>
+                        <label>
+                            <input
+                                type="checkbox"
+                                name="ccb_options[show_functional]"
+                                value="1"
+                                <?php checked('1', $opts['show_functional']); ?>>
+                            <?php esc_html_e('Show functional cookies section in banner', 'cookie-consent-banner'); ?>
+                        </label>
+                        <p class="description"><?php esc_html_e('Enable only when the site loads third-party features that remember something (live chat, embedded videos or maps). Settings the visitor chooses by clicking, such as contrast or font size, do not need it. The toggle always starts disabled.', 'cookie-consent-banner'); ?></p>
                     </td>
                 </tr>
 
@@ -344,7 +361,7 @@ function ccb_render_settings_page(): void
                 </tr>
 
                 <?php ccb_textarea_field('desc_technical',  __('Technical',   'cookie-consent-banner'), __('Always visible, toggle disabled.', 'cookie-consent-banner'), $opts); ?>
-                <?php ccb_textarea_field('desc_functional', __('Functional',  'cookie-consent-banner'), '', $opts); ?>
+                <?php ccb_textarea_field('desc_functional', __('Functional',  'cookie-consent-banner'), __('Visible only when functional section is enabled.', 'cookie-consent-banner'), $opts); ?>
                 <?php ccb_textarea_field('desc_analytics',  __('Analytics',   'cookie-consent-banner'), __('Visible only when analytics section is enabled.', 'cookie-consent-banner'), $opts); ?>
                 <?php ccb_textarea_field(
                     'desc_marketing',

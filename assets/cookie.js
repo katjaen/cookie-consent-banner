@@ -1,5 +1,5 @@
 /**
- * Cookie Consent Banner – cookie.js  v2.6.1
+ * Cookie Consent Banner – cookie.js  v2.7.0
  *
  * Moduły:
  *  UI       – stany banera (BANNER / OPTIONS / HIDDEN)
@@ -208,7 +208,7 @@
 				event: "cookieConsentUpdate",
 				cookieAnalytics: false,
 				cookieMarketing: false,
-				cookieFunctional: true,
+				cookieFunctional: false,
 			});
 
 			this._clearTrackingCookies();
@@ -415,8 +415,7 @@
 		const prefs = {};
 		el.toggles().forEach(btn => {
 			const type = btn.dataset.cookieType;
-			// funkcjonalne zostają true, reszta false
-			prefs[type] = !TRACKING_TYPES.includes(type);
+			prefs[type] = false;
 		});
 		applyAndClose(prefs);
 	}
@@ -428,7 +427,7 @@
 		if (Storage.hasConsent()) {
 			loadToToggles(); // wróć do zapisanych – powrót użytkownika
 		}
-		// przy pierwszej wizycie – zostaw stan z HTML (funkcjonalne=true z aria-checked)
+		// przy pierwszej wizycie – zostaw stan z HTML (wszystkie przełączniki wyłączone)
 		UI.set(UI.OPTIONS);
 	}
 

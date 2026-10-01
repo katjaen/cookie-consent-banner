@@ -1,6 +1,6 @@
 {
 	"name": "cookie-consent-banner-tests",
-	"version": "2.6.1",
+	"version": "2.7.0",
 	"private": true,
 	"scripts": {
 		"test": "npm run test:js && npm run test:php",

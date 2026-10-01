@@ -2,10 +2,11 @@
 
 <?php
 /**
- * Cookie Consent Banner Template  v2.6.1
+ * Cookie Consent Banner Template  v2.7.0
  * Wszystkie teksty i opcje pobierane przez ccb_get() z bazy danych.
  */
 
+$ccb_show_functional = (bool) ccb_get('show_functional');
 $ccb_show_analytics  = (bool) ccb_get('show_analytics');
 $ccb_show_marketing  = (bool) ccb_get('show_marketing');
 $ccb_toggle_position = ccb_get('toggle_position') === 'right' ? 'right' : 'left';
@@ -76,6 +77,7 @@ $allowed_tags = [
                 </p>
             </div>
 
+            <?php if ($ccb_show_functional) : ?>
             <!-- FUNKCJONALNE -->
             <div class="cookie-option">
                 <div class="cookie-option__row">
@@ -87,13 +89,14 @@ $allowed_tags = [
                         class="cookie-toggle"
                         type="button"
                         role="switch"
-                        aria-checked="true"
+                        aria-checked="false"
                         data-cookie-type="functional"><span class="cookie-toggle__thumb"></span><span class="sr-only"><?php esc_html_e('Enable or disable functional cookies', 'cookie-consent-banner'); ?></span></button>
                 </div>
                 <p class="cookie-option__description">
                     <?php echo wp_kses(ccb_get('desc_functional'), $allowed_tags); ?>
                 </p>
             </div>
+            <?php endif; ?>
 
             <?php if ($ccb_show_analytics) : ?>
                 <!-- ANALITYCZNE -->

@@ -29,7 +29,7 @@ function setupBannerDom() {
 					<button id="customize-cookie-preferences-btn" type="button">Customize settings</button>
 				</div>
 				<div id="cookie-options" class="cookie-options display--none">
-					<button class="cookie-toggle" type="button" role="switch" aria-checked="true" data-cookie-type="functional"></button>
+					<button class="cookie-toggle" type="button" role="switch" aria-checked="false" data-cookie-type="functional"></button>
 					<button class="cookie-toggle" type="button" role="switch" aria-checked="false" data-cookie-type="analytics"></button>
 					<button class="cookie-toggle" type="button" role="switch" aria-checked="false" data-cookie-type="marketing"></button>
 					<div class="cookie-options__footer">
@@ -71,12 +71,12 @@ describe("handlery wywołane wprost (handleAcceptAll/handleDenyAll/handleCustomi
 		expect(isHidden("cookie-banner-toggle-btn")).toBe(false);
 	});
 
-	test("handleDenyAll() zostawia functional=true (zawsze aktywne z założenia), resztę odrzuca", () => {
+	test("handleDenyAll() odrzuca wszystkie kategorie opcjonalne (łącznie z functional)", () => {
 		const mod = loadCookieJsFresh();
 		mod.handleDenyAll();
 
 		expect(mod.Storage.getAll()).toEqual({
-			functional: true,
+			functional: false,
 			analytics: false,
 			marketing: false,
 		});
@@ -101,7 +101,7 @@ describe("handlery wywołane wprost (handleAcceptAll/handleDenyAll/handleCustomi
 		mod.handleSave();
 
 		expect(mod.Storage.getAll()).toEqual({
-			functional: true,
+			functional: false,
 			analytics: true,
 			marketing: false,
 		});
@@ -139,12 +139,12 @@ describe("prawdziwe kliknięcia na przyciskach banera (listenery podpięte przez
 		expect(isHidden("cookie-banner")).toBe(true);
 	});
 
-	test("kliknięcie 'Reject all' zapisuje cookies z analytics/marketing odrzuconymi", () => {
+	test("kliknięcie 'Reject all' zapisuje cookies z functional/analytics/marketing odrzuconymi", () => {
 		loadCookieJsFresh();
 
 		document.getElementById("deny-all-cookies-btn").click();
 
-		expect(document.cookie).toContain("cookieConsent-functional=true");
+		expect(document.cookie).toContain("cookieConsent-functional=false");
 		expect(document.cookie).toContain("cookieConsent-analytics=false");
 		expect(document.cookie).toContain("cookieConsent-marketing=false");
 	});

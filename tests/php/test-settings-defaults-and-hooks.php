@@ -135,7 +135,7 @@ ccb_test_fire('wp_footer');
 $banner_html = ob_get_clean();
 assert_true(str_contains($banner_html, 'id="cookie-banner"'), 'kontener bannera obecny w wyjściu');
 assert_true(str_contains($banner_html, 'Accept all'), 'przycisk "Accept all" obecny (i18n passthrough w bootstrapie)');
-assert_true(str_contains($banner_html, 'id="toggle-functional"'), 'sekcja funkcjonalnych zawsze obecna');
+assert_true(!str_contains($banner_html, 'id="toggle-functional"'), 'show_functional domyślnie "" -> sekcja funkcjonalnych UKRYTA');
 assert_true(str_contains($banner_html, 'id="toggle-analytics"'), 'show_analytics domyślnie "1" -> sekcja analityczna WIDOCZNA');
 assert_true(!str_contains($banner_html, 'id="toggle-marketing"'), 'show_marketing domyślnie "" -> sekcja marketingowa UKRYTA');
 assert_true(str_contains($banner_html, 'id="cookie-banner-toggle-btn"'), 'pływający przycisk toggle obecny w markupie');

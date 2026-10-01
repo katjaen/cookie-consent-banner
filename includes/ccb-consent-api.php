@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cookie Consent Banner – Integracje  v2.6.1
+ * Cookie Consent Banner – Integracje  v2.7.0
  *
  * 1. WP Consent API
  *    Rejestruje kategorie cookies i synchronizuje stan zgód

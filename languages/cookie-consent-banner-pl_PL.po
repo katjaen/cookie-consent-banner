@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Cookie Consent Banner 2.6.1\n"
+"Project-Id-Version: Cookie Consent Banner 2.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cookie-consent-"
 "banner\n"
 "POT-Creation-Date: 2026-04-19T11:04:16+00:00\n"
@@ -336,7 +336,7 @@ msgstr "Maksymalna szerokość baneru"
 #: includes/ccb-settings.php:399
 #, php-format
 msgid "Units: %s. Default: 64ch. Never exceeds 100%%."
-msgstr "Jednostki: %s. Domyślnie: 64 kanały. Nigdy nie przekracza 100%%."
+msgstr "Jednostki: %s. Domyślnie: 64ch (ch = szerokość znaku „0”). Nigdy nie przekracza 100%%."
 
 #: includes/ccb-settings.php:408 includes/ccb-settings.php:411
 msgid "Restore button position"
@@ -421,3 +421,15 @@ msgstr "Włącz lub wyłącz pliki cookie marketingowe"
 #: templates/banner.php:156
 msgid "Open cookie settings"
 msgstr "Otwórz ustawienia cookies"
+
+#: includes/ccb-settings.php
+msgid "Show functional cookies section in banner"
+msgstr "Pokaż sekcję plików cookie funkcjonalnych w banerze"
+
+#: includes/ccb-settings.php
+msgid "Enable only when the site loads third-party features that remember something (live chat, embedded videos or maps). Settings the visitor chooses by clicking, such as contrast or font size, do not need it. The toggle always starts disabled."
+msgstr "Włącz tylko wtedy, gdy strona ładuje zewnętrzne funkcje, które coś zapamiętują (czat, osadzone filmy lub mapy). Ustawienia wybrane przez odwiedzającego kliknięciem, np. kontrast czy rozmiar czcionki, tego nie wymagają. Przełącznik zawsze startuje wyłączony."
+
+#: includes/ccb-settings.php
+msgid "Visible only when functional section is enabled."
+msgstr "Widoczna tylko, gdy sekcja funkcjonalnych jest włączona."

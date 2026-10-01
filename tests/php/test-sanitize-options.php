@@ -13,6 +13,7 @@ ccb_test_section('ccb_defaults() — kształt i wartości domyślne');
 ccb_test_reset_state();
 $defaults = ccb_defaults();
 assert_equal('', $defaults['gtm_id'], 'domyślnie brak GTM ID');
+assert_equal('', $defaults['show_functional'], 'domyślnie sekcja functional ukryta');
 assert_equal('1', $defaults['show_analytics'], 'domyślnie sekcja analytics widoczna');
 assert_equal('', $defaults['show_marketing'], 'domyślnie sekcja marketing ukryta');
 assert_equal('', $defaults['yt_nocookie'], 'domyślnie youtube nocookie wyłączone');
