@@ -4,7 +4,7 @@
  * Plugin Name: Cookie Consent Banner
  * Plugin URI:  https://github.com/katjaen/cookie-consent-banner
  * Description: GDPR-compliant cookie consent banner – lightweight, accessible, cookie-based storage. No external dependencies.
- * Version:     2.5.0
+ * Version:     2.6.0
  * Author:      Katarzyna Niklas
  * Author URI:  https://niklassmolen.pl
  * License:     GPL-2.0-or-later
@@ -15,7 +15,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('CCB_VERSION', '2.5.0');
+define('CCB_VERSION', '2.6.0');
 define('CCB_PATH', plugin_dir_path(__FILE__));
 define('CCB_URL',  plugin_dir_url(__FILE__));
 

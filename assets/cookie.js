@@ -1,10 +1,10 @@
 /**
- * Cookie Consent Banner – cookie.js  v2.5.0
+ * Cookie Consent Banner – cookie.js  v2.6.0
  *
  * Moduły:
  *  UI       – stany banera (BANNER / OPTIONS / HIDDEN)
  *  Storage  – zapis/odczyt zgód jako osobne cookies HTTP
- *  Tracking – GTM i czyszczenie ciasteczek śledzących
+ *  Tracking – GTM, zgoda dla Clarity i czyszczenie ciasteczek śledzących
  *  Toggles  – przełączniki role="switch"
  *  Focus    – trapFocus (a11y)
  */
@@ -177,6 +177,8 @@
 				});
 			}
 
+			this._clarityConsent(preferences.marketing, preferences.analytics);
+
 			if (allowed && gtmId) this._loadGTM(gtmId);
 
 			window.dataLayer = window.dataLayer || [];
@@ -197,7 +199,33 @@
 					analytics_storage: "denied",
 				});
 			}
+
+			this._clarityConsent(false, false);
+			if (typeof window.clarity === "function") window.clarity("consent", false);
+
+			window.dataLayer = window.dataLayer || [];
+			window.dataLayer.push({
+				event: "cookieConsentUpdate",
+				cookieAnalytics: false,
+				cookieMarketing: false,
+				cookieFunctional: true,
+			});
+
 			this._clearTrackingCookies();
+		},
+
+		// Stub z kolejką: Clarity ładuje się async z GTM i odczyta zaległe wywołania.
+		_clarityConsent(ads, analytics) {
+			if (!CONFIG.gtmId) return;
+			window.clarity =
+				window.clarity ||
+				function () {
+					(window.clarity.q = window.clarity.q || []).push(arguments);
+				};
+			window.clarity("consentv2", {
+				ad_Storage: ads ? "granted" : "denied",
+				analytics_Storage: analytics ? "granted" : "denied",
+			});
 		},
 
 		_loadGTM(id) {
@@ -227,7 +255,7 @@
 		},
 
 		_clearTrackingCookies() {
-			const staticList = ["_ga", "_gid", "_gat", "_fbp", "_gcl_au"];
+			const staticList = ["_ga", "_gid", "_gat", "_fbp", "_gcl_au", "_clck", "_clsk"];
 			const ga4Cookies = document.cookie
 				.split("; ")
 				.map(c => c.split("=")[0])

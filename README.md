@@ -25,6 +25,7 @@ A lightweight, accessible, GDPR-compliant cookie consent plugin for WordPress �
 6. [CSS Custom Properties](#css-custom-properties)
    - [Dark / light / high-contrast](#dark--light--high-contrast)
 7. [WP Consent API](#wp-consent-api)
+   - [Microsoft Clarity](#microsoft-clarity)
 8. [GDPR notes](#gdpr-notes)
 9. [Requirements](#requirements)
 10. [Internationalization (i18n)](#internationalization-i18n)
@@ -41,6 +42,7 @@ Most cookie consent plugins are either too heavy (loading external scripts, font
 - **Fully accessible** — keyboard navigation, screen reader support, focus management (see [Accessibility](#accessibility))
 - **GDPR-compliant** — consent stored as separate HTTP cookies per type, GTM loads only after consent, functional cookies default to `true` (legitimate interest), analytics/marketing default to `false`
 - **GTM-based** — GA4, Facebook Pixel, Hotjar and any other tool configured in GTM loads automatically after consent, no extra code needed
+- **Microsoft Clarity** — consent is passed via `clarity('consentv2', …)` and withdrawn via `clarity('consent', false)` (see [Microsoft Clarity](#microsoft-clarity))
 - **WP Consent API** integration — works with Embed Privacy and other consent-aware plugins
 - **Modular PHP** — settings, integrations, and template are separate files
 
@@ -217,6 +219,16 @@ This enables plugins like [Embed Privacy](https://wordpress.org/plugins/embed-pr
 | functional  | functional     |
 | analytics   | statistics     |
 | marketing   | marketing      |
+
+### Microsoft Clarity
+
+Clarity is loaded as a tag in GTM (no separate ID in plugin settings). The plugin only passes the consent decision:
+
+- `analytics` → `analytics_Storage`, `marketing` → `ad_Storage` (`clarity('consentv2', …)`), sent on every `Tracking.enable()`
+- `window.clarity` is stubbed with a queue first, because Clarity loads async from GTM and would otherwise miss the call
+- on rejection / withdrawal: `consentv2` denied + `clarity('consent', false)` + `cookieConsentUpdate` pushed to `dataLayer`; `_clck` / `_clsk` are cleared
+- GTM trigger for the Clarity tag: custom event `cookieConsentUpdate` with `cookieAnalytics = true`
+- Clarity-side setup (cookie consent mode, masking) – see `docs/ux/clarity.md` in the parent repo
 
 ---
 

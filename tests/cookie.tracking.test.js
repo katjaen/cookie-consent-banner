@@ -27,6 +27,7 @@ beforeEach(() => {
 	delete window.cookieConfig;
 	delete window.gtag;
 	delete window.dataLayer;
+	delete window.clarity;
 });
 
 describe("Tracking.enable()", () => {
@@ -167,5 +168,63 @@ describe("Tracking.disable()", () => {
 		Tracking.disable();
 
 		expect(document.cookie).toContain("cookieConsent-functional=true");
+	});
+});
+
+describe("Clarity – consentv2", () => {
+	test("enable() z gtmId: przed załadowaniem Clarity kolejkuje consentv2 (analytics->analytics_Storage, marketing->ad_Storage)", () => {
+		window.cookieConfig = { gtmId: "GTM-ABC1234" };
+		const { Tracking } = loadCookieJsFresh();
+
+		Tracking.enable({ functional: true, analytics: true, marketing: false });
+
+		expect(typeof window.clarity).toBe("function");
+		const [name, payload] = window.clarity.q[0];
+		expect(name).toBe("consentv2");
+		expect(payload).toEqual({
+			ad_Storage: "denied",
+			analytics_Storage: "granted",
+		});
+	});
+
+	test("enable() woła istniejące window.clarity zamiast je nadpisywać", () => {
+		window.cookieConfig = { gtmId: "GTM-ABC1234" };
+		window.clarity = jest.fn();
+		const { Tracking } = loadCookieJsFresh();
+
+		Tracking.enable({ analytics: true, marketing: true });
+
+		expect(window.clarity).toHaveBeenCalledWith("consentv2", {
+			ad_Storage: "granted",
+			analytics_Storage: "granted",
+		});
+	});
+
+	test("bez gtmId nie tworzy window.clarity", () => {
+		window.cookieConfig = {};
+		const { Tracking } = loadCookieJsFresh();
+
+		Tracking.enable({ analytics: true });
+
+		expect(window.clarity).toBeUndefined();
+	});
+
+	test("disable() odmawia obu sygnałów, kasuje cookies Clarity i pushuje cookieConsentUpdate", () => {
+		window.cookieConfig = { gtmId: "GTM-ABC1234" };
+		window.clarity = jest.fn();
+		document.cookie = "_clck=abc; path=/";
+		const { Tracking } = loadCookieJsFresh();
+
+		Tracking.disable();
+
+		expect(window.clarity).toHaveBeenCalledWith("consentv2", {
+			ad_Storage: "denied",
+			analytics_Storage: "denied",
+		});
+		expect(window.clarity).toHaveBeenCalledWith("consent", false);
+		expect(document.cookie).not.toContain("_clck=abc");
+		expect(
+			window.dataLayer.find(e => e.event === "cookieConsentUpdate"),
+		).toMatchObject({ cookieAnalytics: false, cookieMarketing: false });
 	});
 });

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cookie Consent Banner – Strona ustawień  v2.5.0
+ * Cookie Consent Banner – Strona ustawień  v2.6.0
  */
 
 if (!defined('ABSPATH')) exit;
