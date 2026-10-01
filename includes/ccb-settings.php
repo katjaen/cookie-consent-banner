@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cookie Consent Banner – Strona ustawień  v2.6.0
+ * Cookie Consent Banner – Strona ustawień  v2.6.1
  */
 
 if (!defined('ABSPATH')) exit;
@@ -137,8 +137,24 @@ function ccb_get(string $key)
     if ($options === null) {
         $options = wp_parse_args(get_option('ccb_options', []), ccb_defaults());
     }
-    return $options[$key] ?? null;
+    $value = $options[$key] ?? null;
+    if (is_string($value) && in_array($key, CCB_TRANSLATABLE, true) && function_exists('pll__')) {
+        return pll__($value);
+    }
+    return $value;
 }
+
+// Teksty widoczne dla odwiedzającego – Polylang (Języki → Tłumaczenia), tłumaczenie po tekście źródłowym.
+const CCB_TRANSLATABLE = ['banner_desc', 'desc_technical', 'desc_functional', 'desc_analytics', 'desc_marketing'];
+
+add_action('init', function () {
+    if (!function_exists('pll_register_string')) return;
+    // get_option, nie ccb_get(): rejestrujemy tekst źródłowy, nie jego tłumaczenie.
+    $opts = wp_parse_args(get_option('ccb_options', []), ccb_defaults());
+    foreach (CCB_TRANSLATABLE as $key) {
+        pll_register_string($key, $opts[$key], 'Cookie Consent Banner', true);
+    }
+}, 20);
 
 // ==========================
 // HELPER WIDOKU: textarea

@@ -2,7 +2,7 @@
 
 <?php
 /**
- * Cookie Consent Banner Template  v2.6.0
+ * Cookie Consent Banner Template  v2.6.1
  * Wszystkie teksty i opcje pobierane przez ccb_get() z bazy danych.
  */
 

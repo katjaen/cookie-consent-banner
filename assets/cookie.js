@@ -1,5 +1,5 @@
 /**
- * Cookie Consent Banner – cookie.js  v2.6.0
+ * Cookie Consent Banner – cookie.js  v2.6.1
  *
  * Moduły:
  *  UI       – stany banera (BANNER / OPTIONS / HIDDEN)

@@ -273,7 +273,7 @@ A `.pot` template file is included in `languages/cookie-consent-banner.pot` — 
 3. Save as `cookie-consent-banner-{locale}.po` and compile to `.mo` (e.g. `cookie-consent-banner-de_DE.po`)
 4. Place both files in the `languages/` folder
 
-**Note:** Dynamic texts configured in the settings page (banner description, cookie section descriptions) are stored in the database as entered by the admin. These are not translatable via `.po` files. For multilingual sites, manage these texts through your multilingual plugin (WPML, Polylang) or enter them directly in the language of the site.
+**Dynamic texts (banner description, section descriptions):** stored in the database as entered by the admin, so `.po` files do not cover them. With free **Polylang** active, the plugin registers them as strings (context "Cookie Consent Banner"): enter the source-language text in the plugin settings and translate it in **Languages → Translations**. Polylang matches translations by the exact source text, so editing the source text means re-translating. Without Polylang nothing changes. For other multilingual plugins, enter the texts in the site language.
 
 ---
 
